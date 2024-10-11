@@ -38,8 +38,12 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'staff',
         ],
+        'web_mp' => [
+            'driver' => 'session',
+            'provider' => 'medical_personnel',
+        ]
     ],
 
     /*
@@ -60,10 +64,14 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'staff' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
+            'model' => env('AUTH_MODEL', App\Models\Staff::class),
         ],
+        'medical_personnel' => [
+            'driver' => 'eloquent',
+            'model' => env('AUTH_MODEL', App\Models\MedicalPersonnel::class),
+        ]
 
         // 'users' => [
         //     'driver' => 'database',

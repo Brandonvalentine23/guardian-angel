@@ -146,20 +146,6 @@
             text-decoration: underline;
         }
 
-        .MElogin {
-            display: block;
-            text-align: left;
-            margin-top: 10px;
-            font-size: 0.9rem;
-            color: #1976D2;
-            text-decoration: none;
-        }
-
-        .MElogin:hover {
-            text-decoration: underline;
-        }
-        
-
         @media (max-width: 768px) {
             .login-container {
                 flex-direction: column;
@@ -195,7 +181,7 @@
             @endif
             
             <!-- Login Form -->
-            <form method="POST" action="{{ route('login.admin') }}">
+            <form method="POST" action="{{ route('login.MP') }}">
                 @csrf
                 <div class="form-group">
                     <label for="email">Email Address</label>
@@ -207,19 +193,14 @@
                     <input id="password" type="password" name="password" required placeholder="Enter your password">
                 </div>
 
-               
-                    <a href="{{ route('loginMP') }}" class="MElogin"style="text-align: end;">Medical personnel Login Page</a>
-                    <a href="#" class="forgot-password" style="text-align: end;">Forgot Password?</a>
-               
+                <a href="#" class="forgot-password">Forgot Password?</a>
 
                 <!-- Login Button -->
                 <button type="submit" class="login-button">Login</button>
             </form>
 
-            <!-- Register Button -->
-            <button class="register-button" onclick="window.location.href='{{ route('register.staff') }}'">Register as Admin</button>
+        
         </div>
     </div>
 </body>
 </html>
-

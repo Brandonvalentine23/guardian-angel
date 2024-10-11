@@ -129,7 +129,7 @@
                 <select id="role" name="role" required>
                     <option value="" disabled selected>Select a role</option>
                     <option value="admin">Admin</option>
-                    <option value="support">Support</option>
+                    {{-- <option value="support">Support</option>  --}}
                 </select>
             </div>
 

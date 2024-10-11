@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\user as Authenticatable;
 
-class MedicalPersonnel extends Model
+class MedicalPersonnel extends Authenticatable
 {
     use HasFactory;
 

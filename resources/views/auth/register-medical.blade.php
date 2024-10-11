@@ -77,7 +77,7 @@
             background-color: #3B9BA8;
         }
 
-        .back-to-login {
+        .back-to-dash {
             display: block;
             text-align: center;
             margin-top: 20px;
@@ -86,8 +86,18 @@
             text-decoration: none;
         }
 
-        .back-to-login:hover {
+        .back-to-dash:hover {
             text-decoration: underline;
+        }
+
+        /* Success Message Styling */
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            text-align: center;
         }
 
         /* Error Styling */
@@ -102,14 +112,20 @@
     <div class="register-container">
         <h3>Register as Medical Personnel</h3>
 
+        <!-- Display Success Message -->
+        @if (session('status'))
+            <div class="alert alert-success">
+                {{ session('status') }}
+            </div>
+        @endif
+
         <!-- Display Validation Errors -->
-       
         @if ($errors->any())
-        @foreach ($errors->all() as $error)
-            {{ $error }}
-            <br>
-        @endforeach
-@endif
+            @foreach ($errors->all() as $error)
+                <div class="error-message">{{ $error }}</div>
+            @endforeach
+        @endif
+
         <!-- Medical Personnel Registration Form -->
         <form method="POST" action="{{ route('register.medical.submit') }}">
             @csrf
@@ -144,10 +160,10 @@
                 <input id="license-number" type="text" name="license_number" value="{{ old('license_number') }}" required placeholder="Enter your medical license number">
             </div>
 
-            <button type="submit" class="register-button">Register as Medical Personnel</button>
+            <button type="submit" class="register-button">Register Medical Personnel</button>
         </form>
 
-        <a href="{{ route('login') }}" class="back-to-login">Already have an account? Login</a>
+        <a href="{{ route('welcome') }}" class="back-to-dash"> Back To Dashboard</a>
     </div>
 </body>
 </html>
