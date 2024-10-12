@@ -89,11 +89,43 @@
         .back-to-login:hover {
             text-decoration: underline;
         }
+
+          /* Success Message Styling */
+          .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        /* Error Styling */
+        .error-message {
+            color: red;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
     </style>
 </head>
 <body>
     <div class="register-container">
         <h3>Register as Staff</h3>
+
+         <!-- Display Success Message -->
+         @if (session('status'))
+         <div class="alert alert-success">
+             {{ session('status') }}
+         </div>
+     @endif
+
+     <!-- Display Validation Errors -->
+     @if ($errors->any())
+         @foreach ($errors->all() as $error)
+             <div class="error-message">{{ $error }}</div>
+         @endforeach
+     @endif
 
         <!-- Staff Registration Form -->
         <form method="POST" action="{{ route('register.staff.submit') }}">

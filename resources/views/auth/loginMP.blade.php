@@ -133,6 +133,23 @@
             background-color: #3B9BA8;
         }
 
+        .backtoadminlog-button {
+            width: 100%;
+            padding: 1rem;
+            background-color: #4bb5c5;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .backtoadminlog:hover {
+            background-color: #3B9BA8;
+        }
+
         .forgot-password {
             display: block;
             text-align: right;
@@ -197,7 +214,9 @@
 
                 <!-- Login Button -->
                 <button type="submit" class="login-button">Login</button>
-            </form>
+
+                <!-- Back Button to Staff Login -->
+                <button class="backtoadminlog-button" onclick="window.location.href='{{ route('login') }}'">Back To Admin Login</button>            </form>
 
         
         </div>

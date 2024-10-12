@@ -45,7 +45,7 @@ class StaffController extends Controller
         if (!$staff) {
             return back()->withErrors([
                 'email' => 'No staff with this email exists.',
-            ]);
+            ]);    
         }
 
         if (!Hash::check($credentials['password'], $staff->password)) {
