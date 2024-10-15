@@ -208,8 +208,8 @@
                 </div>
 
                
-                    <a href="{{ route('loginMP') }}" class="MElogin"style="text-align: end;">Medical personnel Login Page</a>
-                    <a href="#" class="forgot-password" style="text-align: end;">Forgot Password?</a>
+                    <a href="{{ route('loginMP') }}" class="MElogin" style="text-align: end;">Medical personnel Login Page</a>
+                    <a href="{{ route('password.request.staff') }}" class="forgot-password" style="text-align: end;">Forgot Password?</a>
                
 
                 <!-- Login Button -->

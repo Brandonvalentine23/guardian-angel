@@ -210,13 +210,14 @@
                     <input id="password" type="password" name="password" required placeholder="Enter your password">
                 </div>
 
-                <a href="#" class="forgot-password">Forgot Password?</a>
+                <a href="{{ route('password.request.MP') }}" class="forgot-password">Forgot Password?</a>
 
                 <!-- Login Button -->
                 <button type="submit" class="login-button">Login</button>
 
                 <!-- Back Button to Staff Login -->
-                <button class="backtoadminlog-button" onclick="window.location.href='{{ route('login') }}'">Back To Admin Login</button>            </form>
+                <button class="backtoadminlog-button" onclick="window.location.href='{{ route('login') }}'">Back To Admin Login</button>           
+             </form>
 
         
         </div>
