@@ -85,6 +85,7 @@
             background-color: #E64A19;
         }
 
+
         .alert {
             padding: 10px;
             border-radius: 5px;
@@ -131,6 +132,7 @@
                 <input type="email" name="email" required autofocus>
             </div>
             <button type="submit" class="reset-button">Send Password Reset Link</button>
+            <a href="{{ route('loginMP') }}" class="btn-secondary">Go Back</a>
         </form>
     </div>
 </body>

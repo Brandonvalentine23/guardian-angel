@@ -125,6 +125,8 @@
                 <input type="email" name="email" required autofocus>
             </div>
             <button type="submit" class="reset-button">Send Password Reset Link</button>
+            <a href="{{ route('login') }}" class="btn-secondary">Go Back</a>
+
         </form>
     </div>
 </body>
