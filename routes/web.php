@@ -6,6 +6,9 @@ use App\Http\Controllers\StaffController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\MedicalPersonnelForgotPasswordController;
 use App\Http\Controllers\StaffForgotPasswordController;
+use App\Http\Controllers\MotherController;
+use App\Http\Controllers\NewbornController;
+
 
 // General Routes
 // General Routes
@@ -87,3 +90,19 @@ Route::get('/passwords/ResetStaff/{token}', [StaffForgotPasswordController::clas
 
 // Process password reset for staff
 Route::post('/passwords/ResetStaff', [StaffForgotPasswordController::class, 'reset'])->name('password.update.staff');
+
+//mother infant pair viewe route
+Route::get('/motherinfantpair', function () {
+    return view('auth.pairing.motherinfantpair');
+})->name('motherinfant.pair');
+
+//newborn view route
+Route::get('/newbornreg', function () {
+    return view('auth.pairing.newbornreg');
+})->name('newborn.reg');
+
+
+Route::post('/mother/register', [MotherController::class, 'register'])->name('mother.submit');
+
+
+Route::post('/newborn/register', [NewbornController::class, 'store'])->name('newborn.store');

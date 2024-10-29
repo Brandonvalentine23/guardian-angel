@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <title>Guardian Angels - Login</title>
     <!-- External Fonts and Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -207,8 +208,42 @@
 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input id="password" type="password" name="password" required placeholder="Enter your password">
+                    <div style="display: flex; align-items: center; position: relative;">
+                        <!-- Password Input Field -->
+                        <input id="password" type="password" name="password" required 
+                               placeholder="Enter your password" 
+                               style="flex-grow: 1; padding-right: 50px;">
+                
+                        <!-- Toggle Button with Icon -->
+                        <button type="button" id="togglePassword" 
+                                style="
+                                    position: absolute;
+                                    right: 10px;
+                                    top: 60%;
+                                    transform: translateY(-50%);
+                                    border: none;
+                                    background: none;
+                                    cursor: pointer;
+                                    padding: 5px;
+                                ">
+                            <i class="fas fa-eye" style="font-size: 24px;"></i>
+                        </button>
+                    </div>
                 </div>
+
+                <script>
+                    const togglePassword = document.querySelector('#togglePassword');
+                    const password = document.querySelector('#password');
+                
+                    togglePassword.addEventListener('click', function () {
+                        // Toggle the password field type
+                        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                        password.setAttribute('type', type);
+                
+                        // Toggle the eye icon between open and closed
+                        this.querySelector('i').classList.toggle('fa-eye-slash');
+                    });
+                </script>
 
                 <a href="{{ route('password.request.MP') }}" class="forgot-password">Forgot Password?</a>
 
