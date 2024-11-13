@@ -16,10 +16,18 @@ class CreateNewbornsTable extends Migration
             $table->decimal('birth_weight', 5, 2);
             $table->string('blood_type')->nullable();
             $table->string('health_conditions')->nullable();
-            $table->string('mother_name');
-            $table->string('mother_religion');
+
+            // Add foreign key to reference the mother
+            $table->unsignedBigInteger('mother_id');  
+            $table->foreign('mother_id')->references('id')->on('mothers')->onDelete('cascade');
+
+            $table->string('mother_name')->nullable();
+            $table->string('mother_religion')->nullable();
+
+            // Optional father information
             $table->string('father_name')->nullable();
             $table->string('father_religion')->nullable();
+            
             $table->timestamps();
         });
     }

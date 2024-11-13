@@ -206,13 +206,17 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Mother’s Name</label>
-                    <input type="text" name="mother_name" required>
+                    <label for="mother_id">Select Mother</label>
+                    <select name="mother_id" id="mother_id" required>
+                        @foreach ($mothers as $mother)
+                            <option value="{{ $mother->id }}">{{ $mother->mother_name }}</option>
+                        @endforeach
+                    </select>
                 </div>
 
                 <div class="form-group">
                     <label>Mother’s Religion</label>
-                    <input type="text" name="mother_religion" required>
+                    <input type="text" name="mother_religion">
                 </div>
 
                 <div class="form-group">

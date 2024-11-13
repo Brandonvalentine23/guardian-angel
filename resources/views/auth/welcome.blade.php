@@ -137,8 +137,8 @@
         <h2 class="text-lg font-semibold">GUARDIAN ANGEL</h2>
         <ul>
             <li><a href="#" class="nav-link"><i class="fas fa-map-marker-alt"></i> Location Log </a></li>
-            <li><a href="#" class="nav-link"><i class="fas fa-id-card"></i> Newborn Registration Files </a></li>
-            <li><a href="#" class="nav-link"><i class="fas fa-users"></i> Mother-Infant Pairing Files </a></li>
+            <li><a href="{{ route('newborn.file')}}" class="nav-link"><i class="fas fa-id-card"></i> Newborn Registration Files </a></li>
+            <li><a href="{{ route('manage.pair') }}" class="nav-link"><i class="fas fa-users"></i> Paired Mother-Infant</a></li>
             <li><a href="#" class="nav-link"><i class="fas fa-bell"></i> Alerts & Notifications </a></li>
             <li><a href="#" class="nav-link"><i class="fas fa-pills"></i> Medication Administration </a></li>
             <li><a href="#" class="nav-link"><i class="fas fa-cog"></i> Settings</a></li>

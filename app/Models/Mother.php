@@ -29,4 +29,8 @@ class Mother extends Model
         'allergies',
         'pregnancy_history',
     ];
+
+    public function newborn() {
+        return $this->hasmany(Newborn::class);
+    }
 }

@@ -140,7 +140,7 @@
             <li><a href="{{ route('newborn.reg') }}" class="nav-link"><i class="fas fa-id-card"></i> Newborn Registration</a></li>
             <li><a href="{{ route('motherinfant.pair')}}" class="nav-link"><i class="fas fa-users"></i> Mother-Infant Pairing</a></li>
             <li><a href="#" class="nav-link"><i class="fas fa-bell"></i> Alerts & Notifications</a></li>
-            <li><a href="#" class="nav-link"><i class="fas fa-pills"></i> Medication Administration</a></li>
+            <li><a href="{{route('medication-administration.index')}}" class="nav-link"><i class="fas fa-pills"></i> Medication Administration</a></li>
             <li><a href="#" class="nav-link"><i class="fas fa-cog"></i> Settings</a></li>
             <li><a href="{{ route('logout') }}" class="nav-link"><i class="fas fa-cog"></i> Logout</a></li>
         </ul>

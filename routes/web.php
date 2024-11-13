@@ -8,6 +8,10 @@ use App\Http\Controllers\MedicalPersonnelForgotPasswordController;
 use App\Http\Controllers\StaffForgotPasswordController;
 use App\Http\Controllers\MotherController;
 use App\Http\Controllers\NewbornController;
+use App\Http\Controllers\PairingController;
+use App\Http\Controllers\MedicationAdministrationController;
+
+
 
 
 // General Routes
@@ -101,8 +105,32 @@ Route::get('/newbornreg', function () {
     return view('auth.pairing.newbornreg');
 })->name('newborn.reg');
 
+Route::get('/newbornreg', [NewbornController::class, 'pairtomother'])->name('newborn.reg');
+
 
 Route::post('/mother/register', [MotherController::class, 'register'])->name('mother.submit');
 
 
 Route::post('/newborn/register', [NewbornController::class, 'store'])->name('newborn.store');
+
+Route::get('/manage', function () {
+    return view('auth.pairing.manage');
+})->name('manage.pair');
+
+Route::get('/manage', [PairingController::class, 'seelist'])->name('manage.pair');
+
+// Pairing Routes
+Route::get('/pairs', [PairingController::class, 'index'])->name('pairs.index');  // View all pairs
+Route::get('/pairs/{id}/edit', [PairingController::class, 'edit'])->name('pairs.edit');  // Edit a pair
+Route::post('/pairs/{id}/update', [PairingController::class, 'update'])->name('pairs.update');  // Update pair
+Route::delete('/pairs/{id}', [PairingController::class, 'destroy'])->name('pairs.destroy');  // Delete pair
+
+// Route for displaying newborn files
+Route::get('/newbornfile', [NewbornController::class, 'showFiles'])->name('newborn.file');
+
+
+Route::get('/medication-administration', [MedicationAdministrationController::class, 'index'])->name('medication-administration.index');
+Route::get('/medication-administration/create', [MedicationAdministrationController::class, 'create'])->name('medication-administration.create');
+Route::post('/medication-administration/store', [MedicationAdministrationController::class, 'store'])->name('medication-administration.store');
+Route::post('/medication-administration/{id}/mark-as-done', [MedicationAdministrationController::class, 'markAsDone'])->name('medication-administration.markAsDone');
+Route::delete('/medication-administration/{id}/delete', [MedicationAdministrationController::class, 'delete'])->name('medication-administration.delete');

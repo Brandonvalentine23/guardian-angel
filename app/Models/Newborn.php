@@ -16,9 +16,25 @@ class Newborn extends Model
         'birth_weight',
         'blood_type',
         'health_conditions',
+        'mother_id',  // Foreign key reference to the Mother
         'mother_name',
         'mother_religion',
         'father_name',
-        'father_religion',
+        'father_religion' 
+        /* MISSING
+        
+            
+            
+            */
     ];
+
+    // Define the relationship with the Mother model
+    public function mother()
+    {
+        return $this->belongsTo(Mother::class);
+    }
+    public function medicationAdministrations()
+    {
+        return $this->hasMany(MedicationAdministration::class, 'newborn_id');
+    }
 }
