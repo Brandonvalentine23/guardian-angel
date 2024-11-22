@@ -125,24 +125,65 @@
         }
     </style>
 
-    <script>
-        function clearForm() {
-            const inputs = document.querySelectorAll('input, select');
-            inputs.forEach(input => input.value = '');
-        }
-    </script>
+// Function to pair RFID Tag
+<script>
+function pairRfidTag() {
+    
+    // Show a prompt or loading message
+    alert('Please scan the RFID tag...');
+
+    // Fetch the UID from the Pico W
+    fetch('http://172.20.10.2/get-uid')  // Ensure the correct IP address
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.uid) {
+                // Insert the UID into the form field
+                document.getElementById('rfid_uid').value = data.uid;
+                alert("RFID UID successfully paired!");
+            } else {
+                alert("Failed to read RFID UID. Please try again.");
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching RFID UID:", error);
+            alert("Error communicating with RFID reader. Please check your setup.");
+        });
+}
+
+// Attach the function to the button click event
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('pair-rfid-btn').addEventListener('click', pairRfidTag);
+});
+</script>
+<script>
+    function clearForm() {
+        // Get the form element
+        const form = document.querySelector('form');
+
+        // Reset the form fields
+        form.reset();
+
+        // If any fields are manually filled (like RFID UID), clear them explicitly
+        document.getElementById('rfid_uid').value = '';
+    }
+</script>
 </head>
 <body>
 
     <div class="sidebar">
-        <h2>GUARDIAN ANGEL</h2>
+        <h2>GUARDIAN ANGEL, Medical Personnel</h2>
         <ul>
-            <li><a href="{{ route('welcome.MP')}}" class="nav-link">Home</a></li>
-            <li><a href="#" class="nav-link">Location Tracking</a></li>
-            <li><a href="{{ route('motherinfant.pair') }}" class="nav-link">Mother-Infant Pairing</a></li>
-            <li><a href="#" class="nav-link">Alerts & Notifications</a></li>
-            <li><a href="#" class="nav-link">Medication Administration</a></li>
-            <li><a href="{{ route('logout') }}" class="nav-link">Logout</a></li>
+            <li><a href="{{ route('welcome.MP') }}" class="nav-link">Home</a></li>  
+            <li><a href="{{ route('motherinfant.pair')}}" class="nav-link"><i class="fas fa-users"></i> Mother's Registration</a></li>
+            <li><a href="{{ route('alert') }}" class="nav-link"><i class="fas fa-bell"></i> Alerts & Notifications</a></li>
+            <li><a href="{{route('medication-administration.index')}}" class="nav-link"><i class="fas fa-pills"></i> Medication Administration</a></li>
+            <li><a href="#" class="nav-link"><i class="fas fa-map-marker-alt"></i> Location Tracking</a></li>
+            <li><a href="{{ route('logout') }}" class="nav-link"><i class="fas fa-cog"></i> Logout</a></li>
         </ul>
     </div>
 
@@ -168,8 +209,18 @@
                 @csrf <!-- CSRF token for security -->
 
                 <div class="form-group">
-                    <label>Full Name</label>
+                    <label>Full Name of Newborn Belongs To</label>
                     <input type="text" name="newborn_name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="mother_id">Select Mother</label>
+                    <select name="mother_id" id="mother_id" required>
+                        <option value="" disabled selected>Select a mother</option> <!-- Placeholder option -->
+                        @foreach ($mothers as $mother)
+                            <option value="{{ $mother->id }}">{{ $mother->mother_name }}</option>
+                        @endforeach
+                    </select>
                 </div>
 
                 <div class="form-group">
@@ -193,45 +244,36 @@
                 <div class="form-group">
                     <label>Blood Type</label>
                     <select name="blood_type">
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="AB">AB</option>
-                        <option value="O">O</option>
+                        <option value="A">A+</option>
+                        <option value="B">B+</option>
+                        <option value="AB">AB+</option>
+                        <option value="O">O+</option>
+                        <option value="A">A-</option>
+                        <option value="B">B-</option>
+                        <option value="AB">AB-</option>
+                        <option value="O">O-</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label>Health Conditions</label>
                     <input type="text" name="health_conditions" placeholder="Enter any health conditions">
+                </div>    
+
+                <div class="form-group">
+                    <label>RFID UID</label>
+                    <input type="text" id="rfid_uid" name="rfid_uid" value="" readonly required>
+                    <button type="button" class="submit-button" onclick="pairRfidTag()">Pair RFID Tag</button>
                 </div>
 
                 <div class="form-group">
-                    <label for="mother_id">Select Mother</label>
-                    <select name="mother_id" id="mother_id" required>
-                        @foreach ($mothers as $mother)
-                            <option value="{{ $mother->id }}">{{ $mother->mother_name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Mother’s Religion</label>
-                    <input type="text" name="mother_religion">
-                </div>
-
-                <div class="form-group">
-                    <label>Father’s Name</label>
-                    <input type="text" name="father_name">
-                </div>
-
-                <div class="form-group">
-                    <label>Father’s Religion</label>
-                    <input type="text" name="father_religion">
+                    
+                    <button type="button" class="clear-button" onclick="clearForm()">Clear</button>
+                    <button type="submit" class="submit-button">Submit</button>
                 </div>
 
                 <div class="button-group">
-                    <button type="button" class="clear-button" onclick="clearForm()">Clear</button>
-                    <button type="submit" class="submit-button">Submit</button>
+                    
                 </div>
             </form>
         </div>

@@ -14,6 +14,7 @@ use App\Http\Controllers\MedicationAdministrationController;
 
 
 
+
 // General Routes
 // General Routes
 Route::get('/', function () {
@@ -133,4 +134,32 @@ Route::get('/medication-administration', [MedicationAdministrationController::cl
 Route::get('/medication-administration/create', [MedicationAdministrationController::class, 'create'])->name('medication-administration.create');
 Route::post('/medication-administration/store', [MedicationAdministrationController::class, 'store'])->name('medication-administration.store');
 Route::post('/medication-administration/{id}/mark-as-done', [MedicationAdministrationController::class, 'markAsDone'])->name('medication-administration.markAsDone');
-Route::delete('/medication-administration/{id}/delete', [MedicationAdministrationController::class, 'delete'])->name('medication-administration.delete');
+Route::delete('/medication-administration/delete', [MedicationAdministrationController::class, 'delete'])->name('medication-administration.delete');
+
+// routes/api.php
+Route::post('/newborn/pair-rfid', [NewbornController::class, 'pairRfid']);
+Route::post('/save-uid', [NewbornController::class, 'saveUid']);
+
+Route::get('/locationlog', function () {
+    return view('auth.location.locationlog');
+})->name('view.locationRoute');
+
+Route::get('/report', function () {
+    return view('auth.report');
+})->name('report');
+
+Route::get('/hardware-manage', function () {
+    return view('auth.hardware.hardware-manage');
+})->name('hardware');
+
+Route::get('/alert-noti', function () {
+    return view('auth.alertandnoti.alert-noti');
+})->name('alert');
+
+// Existing route for the view
+Route::get('medication-overview', function () {
+    return view('auth.med.medication-overview');
+})->name('admin.medications.view'); // Renamed to avoid conflict
+
+// Route using the MedicationAdministrationController
+Route::get('/medication-overview', [MedicationAdministrationController::class, 'overview'])->name('medication-administration.overview');

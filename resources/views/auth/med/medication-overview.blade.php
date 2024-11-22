@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guardian Angels - Medication Administration</title>
+    <title>Guardian Angels - Medication Overview</title>
 
     <!-- Fonts and Tailwind CSS -->
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet">
@@ -114,22 +114,6 @@
             background-color: #1c19e6;
         }
 
-        .btn-delete {
-            background-color: #c2181e;
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-block;
-            transition: background-color 0.3s;
-        }
-
-        .btn-delete:hover {
-            background-color: #ff4800;
-        }
-
         @media (max-width: 768px) {
             .main-content {
                 margin-left: 0;
@@ -146,14 +130,17 @@
 
     <!-- Sidebar -->
     <div class="sidebar">
-        <h2 class="text-lg font-semibold">GUARDIAN ANGEL, Medical Personnel</h2>
+        <h2 class="text-lg font-semibold">GUARDIAN ANGEL, Admin</h2>
         <ul>
-            <li><a href="{{ route('welcome.MP') }}" class="nav-link">Home</a></li>  
-            <li><a href="{{ route('newborn.reg') }}" class="nav-link"><i class="fas fa-id-card"></i> Newborn Registration and Pairing</a></li>
-            <li><a href="{{ route('motherinfant.pair')}}" class="nav-link"><i class="fas fa-users"></i> Mother's Registration</a></li>
-            <li><a href="{{ route('alert') }}" class="nav-link"><i class="fas fa-bell"></i> Alerts & Notifications</a></li>
-            <li><a href="#" class="nav-link"><i class="fas fa-map-marker-alt"></i> Location Tracking</a></li>
-            <li><a href="{{ route('logout') }}" class="nav-link"><i class="fas fa-cog"></i> Logout</a></li>
+            <li><a href="{{ route('welcome') }}" class="nav-link">Home</a></li>
+            <li><a href="#" class="nav-link"><i class="fas fa-map-marker-alt"></i> Location Log </a></li>
+            <li><a href="{{ route('newborn.file')}}" class="nav-link"><i class="fas fa-id-card"></i> Newborn Registration Files </a></li>
+            <li><a href="{{ route('manage.pair') }}" class="nav-link"><i class="fas fa-users"></i> Paired Mother-Infant Files</a></li>
+            <li><a href="{{ route('alert') }}"" class="nav-link"><i class="fas fa-bell"></i> Alerts & Notifications </a></li>
+            <li><a href="{{ route('report') }}" class="nav-link"><i class="fas fa-cog"></i> Report</a></li>
+            <li><a href="{{ route('hardware') }}" class="nav-link"><i class="fas fa-cog"></i> Hardware Management</a></li>
+            <li><a href="{{ route('register.medical') }}" class="nav-link"><i class="fas fa-cog"></i> Medical Personal Registration </a></li>
+            <li><a href="{{ route('logout') }}" class="nav-link"><i class="fas fa-cog"></i> Logout </a></li>
         </ul>
     </div>
 
@@ -167,7 +154,6 @@
                     <th class="px-4 py-2">Name</th>
                     <th class="px-4 py-2">Date of Birth</th>
                     <th class="px-4 py-2">Medications</th>
-                    <th class="px-4 py-2">Action</th>
                 </tr>
             </thead>
            <tbody>
@@ -195,28 +181,12 @@
                                     <span style="color: red; font-weight: bold;">Pending</span>
                                 @endif
                                 <br>
-                                <form action="{{ route('medication-administration.markAsDone', ['id' => $medication->newborn_id]) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    <button type="submit" class="btn-mad">Mark as Done</button>
-                                </form>
-                                <form action="{{ route('medication-administration.delete', [
-                                    'id' => $medication->newborn_id,
-                                ]) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <input type="hidden" name="medication_name" value="{{ $medication->medication_name }}">
-                                    <button type="submit" class="btn-delete">Delete</button>
-                                </form>
-
                             </li>
                         @endforeach
                     </ul>
                 @else
                     No medications recorded.
                 @endif
-            </td>
-            <td class="border px-4 py-2">
-                <a href="{{ route('medication-administration.create', ['id' => $newborn->id]) }}" class="btn-primary">Add Medication</a>
             </td>
         </tr>
     @endforeach

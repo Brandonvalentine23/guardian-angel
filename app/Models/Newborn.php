@@ -9,6 +9,7 @@ class Newborn extends Model
 {
     use HasFactory;
 
+    public $timestamps = true;
     protected $fillable = [
         'newborn_name',
         'newborn_dob',
@@ -20,12 +21,8 @@ class Newborn extends Model
         'mother_name',
         'mother_religion',
         'father_name',
-        'father_religion' 
-        /* MISSING
-        
-            
-            
-            */
+        'father_religion',
+        'rfid_uid'
     ];
 
     // Define the relationship with the Mother model
@@ -35,6 +32,6 @@ class Newborn extends Model
     }
     public function medicationAdministrations()
     {
-        return $this->hasMany(MedicationAdministration::class, 'newborn_id');
+        return $this->hasMany(MedicationAdministration::class, 'newborn_id', "id");
     }
 }

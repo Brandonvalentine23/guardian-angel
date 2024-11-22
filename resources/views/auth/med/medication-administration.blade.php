@@ -113,6 +113,15 @@
             background-color: #1565C0;
         }
 
+        .alert-success {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
         @media (max-width: 768px) {
             .main-content {
                 margin-left: 0;
@@ -131,47 +140,106 @@
     <div class="sidebar">
         <h2 class="text-lg font-semibold">GUARDIAN ANGEL</h2>
         <ul>
+            <li><a href="{{ route('welcome.MP') }}" class="nav-link">Home</a></li>  
+            <li><a href="{{ route('newborn.reg') }}" class="nav-link"><i class="fas fa-id-card"></i> Newborn Registration and Pairing</a></li>
+            <li><a href="{{ route('motherinfant.pair')}}" class="nav-link"><i class="fas fa-users"></i> Mother's Registration</a></li>
+            <li><a href="{{ route('alert') }}" class="nav-link"><i class="fas fa-bell"></i> Alerts & Notifications</a></li>
             <li><a href="#" class="nav-link"><i class="fas fa-map-marker-alt"></i> Location Tracking</a></li>
-            <li><a href="{{ route('newborn.reg') }}" class="nav-link"><i class="fas fa-id-card"></i> Newborn Registration</a></li>
-            <li><a href="{{ route('motherinfant.pair') }}" class="nav-link"><i class="fas fa-users"></i> Mother-Infant Pairing</a></li>
-            <li><a href="#" class="nav-link"><i class="fas fa-bell"></i> Alerts & Notifications</a></li>
-            <li><a href="#" class="nav-link"><i class="fas fa-pills"></i> Medication Administration</a></li>
-            <li><a href="#" class="nav-link"><i class="fas fa-cog"></i> Settings</a></li>
             <li><a href="{{ route('logout') }}" class="nav-link"><i class="fas fa-cog"></i> Logout</a></li>
         </ul>
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
-        <div class="form-container">
-            <h2 class="widget-title">Medication Administration</h2>
-            <form action="{{ route('medication-administration.store') }}" method="POST">
-                @csrf
-                <div class="form-group">
-                    <label for="newborn_id">Newborn Name</label>
-                    <select name="newborn_id" id="newborn_id" required>
-                        <option value="">Select Newborn</option>
-                        <option value="{{ $newborn->id }}" selected>{{ $newborn->newborn_name }}</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="medication_type">Medication Type</label>
-                    <input type="text" name="medication_type" id="medication_type" required>
-                </div>
-                <div class="form-group">
-                    <label for="administration_time">Administration Time</label>
-                    <input type="time" name="administration_time" id="administration_time" required>
-                </div>
-                <div class="form-group">
-                    <label for="dose">Dose</label>
-                    <input type="text" name="dose" id="dose" required>
-                </div>
-                <button type="submit" class="btn-primary">Save</button>
-                <a href="{{ route('medication-administration.index') }}" class="btn-back">Back</a> <!-- Back Button -->
 
-            </form>
+        <!-- Success Message -->
+        @if (session('success'))
+        <div class="alert-success">
+            {{ session('success') }}
         </div>
-    </div>
+        @endif
 
+        <!-- Errors -->
+        @if ($errors->any())
+        <div>
+            @foreach ($errors->all() as $error)
+                <p style="color: red;">{{ $error }}</p>
+            @endforeach
+        </div>
+        @endif
+
+        <!-- Form -->
+        <form action="{{ route('medication-administration.store') }}" method="POST">
+            @csrf
+        
+            <!-- Newborn Details -->
+            <h2>Newborn Details</h2>
+            <div class="form-group">
+                <label for="newborn_id">Newborn Name</label>
+                <select name="newborn_id" id="newborn_id" class="form-control" required>
+                        <option value="{{ $newborn->id }}">{{ $newborn->newborn_name }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="dob">Date of Birth</label>
+                <input type="text" name="dob" id="dob" class="form-control" value="{{ $newborn->newborn_dob ?? '' }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="birth_weight">Birth Weight</label>
+                <input type="text" name="birth_weight" id="birth_weight" class="form-control" value="{{ $newborn->birth_weight ?? '' }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="gestational_age">Gestational Age</label>
+                <input type="text" name="gestational_age" id="gestational_age" class="form-control" placeholder="Enter age in weeks" required>
+            </div>
+        
+            <!-- Medication Details -->
+            <h2>Medication Details</h2>
+            <div class="form-group">
+                <label for="medication_name">Medication Name</label>
+                <input type="text" name="medication_name" id="medication_name" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="do">Dosage</label>
+                <input type="text" name="dose" id="dose" class="form-control" placeholder="Enter dosage in mg/ml" required>
+            </div>
+            <div class="form-group">
+                <label for="frequency">Frequency</label>
+                <input type="text" name="frequency" id="frequency" class="form-control" placeholder="e.g., every 6 hours" required>
+            </div>
+            <div class="form-group">
+                <label for="route">Route of Administration</label>
+                <input type="text" name="route" id="route" class="form-control" placeholder="e.g., oral, intravenous" required>
+            </div>
+            <div class="form-group">
+                <label for="administration_time">Administration Time</label>
+                <input type="datetime-local" name="administration_time" id="administration_time" class="form-control" required>
+            </div>
+        
+            <!-- Reason for Medication -->
+            <h2>Reason for Medication</h2>
+            <div class="form-group">
+                <label for="diagnosis">Diagnosis/Condition</label>
+                <input type="text" name="diagnosis" id="diagnosis" class="form-control" placeholder="Enter diagnosis or condition" required>
+            </div>
+        
+            <!-- Notes and Instructions -->
+            <h2>Notes and Instructions</h2>
+            <div class="form-group">
+                <label for="instructions">Special Instructions</label>
+                <textarea name="instructions" id="instructions" class="form-control" rows="4" placeholder="Enter any special instructions"></textarea>
+            </div>
+        
+            <!-- Administered By -->
+            <h2>Administered By</h2>
+            <div class="form-group">
+                <label for="administered_by">Medical Personnel Name</label>
+                <input type="text" name="administered_by" id="administered_by" class="form-control" value="{{ Auth::guard('web_mp')->user()->name }}" readonly>                
+            </div>
+            <button type="submit" class="btn-primary">Save</button>
+            <a href="{{ route('medication-administration.index') }}" class="btn-back">Back</a>
+        </form>                
+
+    </div>
 </body>
 </html>

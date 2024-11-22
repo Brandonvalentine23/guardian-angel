@@ -8,16 +8,25 @@ use Illuminate\Database\Eloquent\Model;
 class MedicationAdministration extends Model
 {
     use HasFactory;
+    
+    public $timestamps = false;
 
     protected $fillable = [
-        'newborn_id',          // Foreign key linking to the newborns table
-        'medication_type',     // Name/type of the medication
-        'administration_time', // Time of administration
-        'dose',                // Dosage of the medication
+        'newborn_id',
+        'medication_name',
+        'frequency',
+        'route',
+        'administration_time',
+        'diagnosis',
+        'instructions',
+        'administered_by',
+        'dose',
+        'birth_weight',
+        'gestational_age',
     ];
 
     public function newborn()
     {
-        return $this->belongsTo(Newborn::class, 'newborn_id'); // Ensure the foreign key name matches
+        return $this->belongsTo(Newborn::class, 'newborn_id', "id"); // Ensure the foreign key name matches
     }
 }

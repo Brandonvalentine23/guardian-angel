@@ -131,14 +131,14 @@
 <body>
 
     <div class="sidebar">
-        <h2>GUARDIAN ANGEL</h2>
+        <h2>GUARDIAN ANGEL, Medical Personnel</h2>
         <ul>
-            <li><a href="{{ route('welcome.MP') }}" class="nav-link">Home</a></li>
-            <li><a href="#" class="nav-link">Location Tracking</a></li>
-            <li><a href="{{ route('newborn.reg') }}" class="nav-link">Newborn Registration</a></li>
-            <li><a href="#" class="nav-link">Alerts & Notifications</a></li>
-            <li><a href="#" class="nav-link">Medication Administration</a></li>
-            <li><a href="{{ route('logout') }}" class="nav-link">Logout</a></li>
+            <li><a href="{{ route('welcome.MP') }}" class="nav-link">Home</a></li>  
+            <li><a href="{{ route('newborn.reg') }}" class="nav-link"><i class="fas fa-id-card"></i> Newborn Registration and Pairing</a></li>
+            <li><a href="{{ route('alert') }}" class="nav-link"><i class="fas fa-bell"></i> Alerts & Notifications</a></li>
+            <li><a href="{{route('medication-administration.index')}}" class="nav-link"><i class="fas fa-pills"></i> Medication Administration</a></li>
+            <li><a href="#" class="nav-link"><i class="fas fa-map-marker-alt"></i> Location Tracking</a></li>
+            <li><a href="{{ route('logout') }}" class="nav-link"><i class="fas fa-cog"></i> Logout</a></li>
         </ul>
     </div>
 
@@ -218,10 +218,14 @@
                 <div class="form-group">
                     <label>Blood Type</label>
                     <select name="blood_type">
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="AB">AB</option>
-                        <option value="O">O</option>
+                        <option value="A">A+</option>
+                        <option value="B">B+</option>
+                        <option value="AB">AB+</option>
+                        <option value="O">O+</option>
+                        <option value="A">A-</option>
+                        <option value="B">B-</option>
+                        <option value="AB">AB-</option>
+                        <option value="O">O-</option>
                     </select>
                 </div>
 

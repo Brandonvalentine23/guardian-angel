@@ -185,7 +185,7 @@
 
         <!-- Right Panel (Login Form) -->
         <div class="login-right">
-            <h3>Welcome Back!</h3>
+            <h3>Welcome Back MEDICAL PERSONNEL!</h3>
             
             <!-- Error Display Section -->
             @if ($errors->any())

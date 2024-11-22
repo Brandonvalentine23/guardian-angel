@@ -110,7 +110,7 @@
 </head>
 <body>
     <div class="register-container">
-        <h3>Register as Medical Personnel</h3>
+        <h3>Register Medical Personnel</h3>
 
         <!-- Display Success Message -->
         @if (session('status'))

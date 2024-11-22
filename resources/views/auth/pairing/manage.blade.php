@@ -49,7 +49,7 @@
         }
 
         .container {
-            background-color: white;
+            background-color: rgb(255, 255, 255);
             border-radius: 20px;
             padding: 2rem;
             box-shadow: 0px 14px 34px 0px rgba(0, 0, 0, 0.08);
@@ -59,9 +59,16 @@
 
         h2 {
             font-size: 1.8rem;
-            color: #f4f7fb;
-            text-align: center;
+            color: #f4f6f7;
+            text-align: left;
         }
+
+        h3 {
+            font-size: 1.8rem;
+            color: #0b0b0b;
+            text-align: left;
+        }
+        
 
         .alert-success {
             background-color: #d4edda;
@@ -130,22 +137,22 @@
 <body>
 
     <div class="sidebar">
-        <h2>GUARDIAN ANGEL</h2>
+        <h2>GUARDIAN ANGEL, Admin</h2>
         <ul>
             <li><a href="{{ route('welcome') }}" class="nav-link">Home</a></li>
-            <li><a href="#" class="nav-link"><i class="fas fa-map-marker-alt"></i> Location Log </a></li>
+            <li><a href="{{ route('view.locationRoute') }}" class="nav-link"><i class="fas fa-map-marker-alt"></i> Location Log </a></li>
             <li><a href="{{ route('newborn.file')}}" class="nav-link"><i class="fas fa-id-card"></i> Newborn Registration Files </a></li>
-            <li><a href="#" class="nav-link">Location Tracking</a></li>
-            <li><a href="#" class="nav-link">Alerts & Notifications</a></li>
-            <li><a href="#" class="nav-link">Medication Administration</a></li>
+            <li><a href="{{ route('alert') }}"" class="nav-link"><i class="fas fa-bell"></i> Alerts & Notifications </a></li>
+            <li><a href="{{ route('admin.medications') }}" class="nav-link"><i class="fas fa-pills"></i> Medication Administration file </a></li>
+            <li><a href="{{ route('report') }}" class="nav-link"><i class="fas fa-cog"></i> Report</a></li>
+            <li><a href="{{ route('hardware') }}" class="nav-link"><i class="fas fa-cog"></i> Hardware Management</a></li>
             <li><a href="{{ route('register.medical') }}" class="nav-link"><i class="fas fa-cog"></i> Medical Personal Registration </a></li>
-            <li><a href="{{ route('logout') }}" class="nav-link">Logout</a></li>
-        </ul>
+            <li><a href="{{ route('logout') }}" class="nav-link"><i class="fas fa-cog"></i> Logout </a></li>
     </div>
 
     <div class="main-content">
         <div class="container">
-            <h2>Manage Mother-Infant Pairs</h2>
+            <h3>Mother-Infant Paired Files</h2>
 
             <!-- Success message display -->
             @if (session('status'))

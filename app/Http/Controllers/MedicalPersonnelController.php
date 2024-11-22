@@ -63,7 +63,7 @@ class MedicalPersonnelController extends Controller
             ]);
         }
 
-        Auth::login($medicalPersonnel);
+        Auth::guard('web_mp')->login($medicalPersonnel);
         $request->session()->regenerate();
         return redirect()->route('welcome.MP');
     }
@@ -71,7 +71,7 @@ class MedicalPersonnelController extends Controller
     // Handle the logout for Medical Personnel
     public function logoutMP(Request $request)
     {
-        Auth::logout();
+        Auth::guard('web_mp')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 

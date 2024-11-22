@@ -7,14 +7,19 @@ namespace App\Http\Controllers;
 use App\Models\Newborn;
 use App\Models\MedicationAdministration;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class MedicationAdministrationController extends Controller
 {
     // Method to show the list of newborns
     public function index()
     {
-        $newborns = Newborn::with('medicationAdministrations')->get(); // Fetch all newborns with their medications
-        return view('auth.med.medicine-view', compact('newborns'));
+        $newborns = Newborn::with('medicationAdministrations')->get();
+
+    // Fetch all newborns with their medications
+        return view('auth.med.medicine-view', [
+            'newborns' => $newborns,
+        ]); 
     }
 
     // Method to store medication administration details
@@ -22,16 +27,30 @@ class MedicationAdministrationController extends Controller
     {
         $request->validate([
             'newborn_id' => 'required|exists:newborns,id',
-            'medication_type' => 'required|string|max:255',
-            'administration_time' => 'required|string',
+            'medication_name' => 'required|string|max:255',
+            'frequency' => 'required|string|max:255',
+            'route' => 'required|string|max:255',
+            'administration_time' => 'required|date',
             'dose' => 'required|string|max:255',
+            'diagnosis' => 'nullable|string|max:255',
+            'instructions' => 'nullable|string',
+            'administered_by' => 'required|string|max:255',
+            'birth_weight' => 'nullable|string|max:255',
+            'gestational_age' => 'nullable|string|max:255',
         ]);
 
         MedicationAdministration::create([
             'newborn_id' => $request->newborn_id,
-            'medication_type' => $request->medication_type,
+            'medication_name' => $request->medication_name,
+            'frequency' => $request->frequency,
+            'route' => $request->route,
             'administration_time' => $request->administration_time,
             'dose' => $request->dose,
+            'diagnosis' => $request->diagnosis,
+            'instructions' => $request->instructions,
+            'administered_by' => $request->administered_by,
+            'birth_weight' => $request->birth_weight,
+            'gestational_age' => $request->gestational_age,
         ]);
 
         return redirect()->route('medication-administration.index')->with('success', 'Medication administration recorded successfully.');
@@ -53,20 +72,36 @@ class MedicationAdministrationController extends Controller
 // Method to mark a medication as done
 public function markAsDone($id)
 {
-    $medication = MedicationAdministration::findOrFail($id);
-    $medication->done = true; // Assuming you add a 'done' column in your table
-    $medication->save();
+    // Update the status 'done' to true (1)
+    DB::table('medication_administrations')
+        ->where('newborn_id', $id)
+        ->update([
+            'done' => 1,
+        ]);
 
     return redirect()->back()->with('success', 'Medication marked as done.');
 }
 
 // Method to delete a medication
-public function delete($id)
+public function delete(Request $request, $id)
 {
-    $medication = MedicationAdministration::findOrFail($id);
-    $medication->delete();
+    $medication_name = $request->medication_name;
+
+    DB::table('medication_administrations')
+        ->where('newborn_id', $id)
+        ->where('medication_name', $medication_name)
+        ->delete();
 
     return redirect()->back()->with('success', 'Medication deleted successfully.');
+}
+public function overview()
+{
+    $newborns = Newborn::with('medicationAdministrations')->get();
+
+    // Fetch all newborns with their medications
+        return view('auth.med.medication-overview', [
+            'newborns' => $newborns,
+        ]); 
 }
 
 }

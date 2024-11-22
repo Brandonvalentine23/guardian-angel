@@ -84,15 +84,16 @@
 
     <!-- Sidebar -->
     <div class="sidebar">
-        <h2 class="text-lg font-semibold">GUARDIAN ANGEL</h2>
+        <h2 class="text-lg font-semibold">GUARDIAN ANGEL, Admin</h2>
         <ul>
             <li><a href="{{ route('welcome') }}" class="nav-link">Home</a></li>
-            <li><a href="{{ route('newborn.file') }}" class="nav-link">Newborn Registration Files</a></li>
-            <li><a href="{{ route('manage.pair') }}" class="nav-link">Paired Mother-Infant</a></li>
-            <li><a href="#" class="nav-link">Alerts & Notifications</a></li>
-            <li><a href="#" class="nav-link">Medication Administration</a></li>
-            <li><a href="{{ route('register.medical') }}" class="nav-link">Medical Personnel Registration</a></li>
-            <li><a href="{{ route('logout') }}" class="nav-link">Logout</a></li>
+            <li><a href="#" class="nav-link"><i class="fas fa-map-marker-alt"></i> Location Log </a></li>
+            <li><a href="{{ route('manage.pair') }}" class="nav-link"><i class="fas fa-users"></i> Paired Mother-Infant Files</a></li>
+            <li><a href="#" class="nav-link"><i class="fas fa-bell"></i> Alerts & Notifications </a></li>
+            <li><a href="{{ route('admin.medications') }}" class="nav-link"><i class="fas fa-pills"></i> Medication Administration file </a></li>
+            <li><a href="#" class="nav-link"><i class="fas fa-cog"></i> Settings</a></li>
+            <li><a href="{{ route('register.medical') }}" class="nav-link"><i class="fas fa-cog"></i> Medical Personal Registration </a></li>
+            <li><a href="{{ route('logout') }}" class="nav-link"><i class="fas fa-cog"></i> Logout </a></li>
         </ul>
     </div>
 
@@ -111,14 +112,14 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Newborn Name</th>
+                        <th>Full Name of Newborn Belongs To</th>
                         <th>Date of Birth</th>
                         <th>Gender</th>
                         <th>Birth Weight</th>
                         <th>Blood Type</th>
                         <th>Health Conditions</th>
                         <th>Mother Name</th>
-                        <th>Father Name</th>
+                        <th>RFID UID</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -128,10 +129,10 @@
                             <td>{{ $newborn->newborn_dob }}</td>
                             <td>{{ ucfirst($newborn->gender) }}</td>
                             <td>{{ $newborn->birth_weight }} kg</td>
-                            <td>{{ $newborn->blood_type ?? 'N/A' }}</td>
+                            <td>{{ $newborn->blood_type }}</td>
                             <td>{{ $newborn->health_conditions ?? 'None' }}</td>
                             <td>{{ $newborn->mother ? $newborn->mother->mother_name : 'No Mother Assigned' }}</td>
-                            <td>{{ $newborn->father_name ?? 'N/A' }}</td>
+                            <td>{{ $newborn->rfid_uid }}</td>
                         </tr>
                     @empty
                         <tr>
