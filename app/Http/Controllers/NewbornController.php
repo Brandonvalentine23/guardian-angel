@@ -113,5 +113,50 @@ class NewbornController extends Controller
             return response()->json(['message' => 'No newborn record found to associate with this UID.'], 404);
         }
     }
+    public function search(Request $request)
+    {
+        // Capture the search query
+        $search = $request->input('search');
     
+        // Fetch records based on the search query or show all if the search is empty
+        $newborns = Newborn::when($search, function ($query, $search) {
+            return $query->where('newborn_name', 'LIKE', '%' . $search . '%');
+        })
+        ->with('mother') // Include associated mother information
+        ->get();
+    
+        // Return the view with the search results
+        return view('auth.newbornfile', compact('newborns', 'search'));
+    }
+    
+    public function searchByRfid(Request $request)
+{
+    // Validate that 'uid' is present in the request
+    $request->validate([
+        'uid' => 'required|string',
+    ]);
+
+    // Query the newborn table for the provided RFID UID
+    $newborn = Newborn::where('rfid_uid', $request->uid)->with('mother')->first();
+
+    if ($newborn) {
+        return response()->json(['newborn' => $newborn], 200);
+    } else {
+        return response()->json(['message' => 'No newborn record found for this RFID UID.'], 404);
+    }
+}
+
+// In a Controller (e.g., NewbornController)
+public function getNewbornRegistrations()
+{
+    // Aggregate data by date of registration
+    $registrations = Newborn::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+        ->groupBy('date')
+        ->orderBy('date', 'asc')
+        ->get();
+
+    // Return the aggregated data as JSON
+    return response()->json($registrations);
+}
+
 }

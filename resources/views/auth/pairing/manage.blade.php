@@ -140,12 +140,11 @@
         <h2>GUARDIAN ANGEL, Admin</h2>
         <ul>
             <li><a href="{{ route('welcome') }}" class="nav-link">Home</a></li>
-            <li><a href="{{ route('view.locationRoute') }}" class="nav-link"><i class="fas fa-map-marker-alt"></i> Location Log </a></li>
-            <li><a href="{{ route('newborn.file')}}" class="nav-link"><i class="fas fa-id-card"></i> Newborn Registration Files </a></li>
+            <li><a href="{{ route('location.log') }}" class="nav-link"><i class="fas fa-map-marker-alt"></i> Location Log </a></li>            <li><a href="{{ route('newborn.file')}}" class="nav-link"><i class="fas fa-id-card"></i> Newborn Registration Files </a></li>
             <li><a href="{{ route('alert') }}"" class="nav-link"><i class="fas fa-bell"></i> Alerts & Notifications </a></li>
-            <li><a href="{{ route('admin.medications') }}" class="nav-link"><i class="fas fa-pills"></i> Medication Administration file </a></li>
+            <li><a href="{{ route('medication-administration.overview') }}" class="nav-link"><i class="fas fa-pills"></i> Medication Administration file </a></li>
             <li><a href="{{ route('report') }}" class="nav-link"><i class="fas fa-cog"></i> Report</a></li>
-            <li><a href="{{ route('hardware') }}" class="nav-link"><i class="fas fa-cog"></i> Hardware Management</a></li>
+            <li><a href="{{ route('hardware.manage') }}" class="nav-link"><i class="fas fa-cog"></i> Hardware Management</a></li>
             <li><a href="{{ route('register.medical') }}" class="nav-link"><i class="fas fa-cog"></i> Medical Personal Registration </a></li>
             <li><a href="{{ route('logout') }}" class="nav-link"><i class="fas fa-cog"></i> Logout </a></li>
     </div>

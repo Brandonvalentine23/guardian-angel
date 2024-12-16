@@ -133,7 +133,7 @@ function pairRfidTag() {
     alert('Please scan the RFID tag...');
 
     // Fetch the UID from the Pico W
-    fetch('http://172.20.10.2/get-uid')  // Ensure the correct IP address
+    fetch('http://192.168.0.10/get-uid')  // Ensure the correct IP address
         .then(response => {
             if (!response.ok) {
                 throw new Error("Network response was not ok");
@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <li><a href="{{ route('welcome.MP') }}" class="nav-link">Home</a></li>  
             <li><a href="{{ route('motherinfant.pair')}}" class="nav-link"><i class="fas fa-users"></i> Mother's Registration</a></li>
             <li><a href="{{ route('alert') }}" class="nav-link"><i class="fas fa-bell"></i> Alerts & Notifications</a></li>
-            <li><a href="{{route('medication-administration.index')}}" class="nav-link"><i class="fas fa-pills"></i> Medication Administration</a></li>
+            <li><a href="{{ route('medication-administration.overview') }}" class="nav-link"><i class="fas fa-pills"></i> Medication Administration file </a></li>
             <li><a href="#" class="nav-link"><i class="fas fa-map-marker-alt"></i> Location Tracking</a></li>
             <li><a href="{{ route('logout') }}" class="nav-link"><i class="fas fa-cog"></i> Logout</a></li>
         </ul>

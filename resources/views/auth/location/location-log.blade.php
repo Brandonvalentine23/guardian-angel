@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Location Log | Guardian Angels Dashboard</title>
-
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet">
-
     <style>
         body {
             background-color: #E3F2FD;
@@ -74,63 +72,82 @@
             margin: 0;
             color: #555;
         }
+
+        .btn-refresh {
+            background-color: #4bb5c5;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .btn-refresh:hover {
+            background-color: #3949AB;
+        }
     </style>
 </head>
 <body>
-
     <div class="sidebar">
         <h2>GUARDIAN ANGEL</h2>
         <ul>
             <li><a href="{{ route('welcome') }}" class="nav-link">Home</a></li>
             <li><a href="{{ route('newborn.file')}}" class="nav-link"><i class="fas fa-id-card"></i> Newborn Registration Files </a></li>
             <li><a href="{{ route('manage.pair') }}" class="nav-link"><i class="fas fa-users"></i> Paired Mother-Infant Files</a></li>
-            <li><a href="{{ route('alert') }}"" class="nav-link"><i class="fas fa-bell"></i> Alerts & Notifications </a></li>
-            <li><a href="{{ route('admin.medications') }}" class="nav-link"><i class="fas fa-pills"></i> Medication Administration file </a></li>
+            <li><a href="{{ route('alert') }}"class="nav-link"><i class="fas fa-bell"></i> Alerts & Notifications </a></li>
+            <li><a href="{{ route('medication-administration.overview') }}" class="nav-link"><i class="fas fa-pills"></i> Medication Administration file </a></li>
             <li><a href="{{ route('report') }}" class="nav-link"><i class="fas fa-cog"></i> Report</a></li>
-            <li><a href="{{ route('hardware') }}" class="nav-link"><i class="fas fa-cog"></i> Hardware Management</a></li>
+            <li><a href="{{ route('hardware.manage') }}" class="nav-link"><i class="fas fa-cog"></i> Hardware Management</a></li>
             <li><a href="{{ route('register.medical') }}" class="nav-link"><i class="fas fa-cog"></i> Medical Personal Registration </a></li>
             <li><a href="{{ route('logout') }}" class="nav-link"><i class="fas fa-cog"></i> Logout </a></li>
         </ul>
     </div>
-
     <div class="main-content">
-        <div class="container">
+        <div class="container">                                                                                                                                                                                         
             <h2>Location Log</h2>
-
-            @php
-            $locationLogs = [
-                (object)[
-                    'location_name' => 'room 23',
-                    'uid' => 'UID12345',
-                    'logged_at' => '2024-11-16 09:30:00',
-                ],
-                (object)[
-                    'location_name' => 'Hospital A',
-                    'uid' => 'UID67890',
-                    'logged_at' => '2024-11-15 16:45:00',
-                ],
-                (object)[
-                    'location_name' => 'Clinic B',
-                    'uid' => 'UID54321',
-                    'logged_at' => '2024-11-14 08:20:00',
-                ],
-            ];
-            @endphp
-
-            <!-- Loop through the location logs and display them -->
-            @if(empty($locationLogs))
-                <p>No location logs available at the moment.</p>
-            @else
-                @foreach($locationLogs as $log)
-                    <div class="log-entry">
-                        <h4>Location: {{ $log->location_name }}</h4>
-                        <p>UID: {{ $log->uid }}</p>
-                        <p>Logged At: {{ $log->logged_at }}</p>
-                    </div>
-                @endforeach
-            @endif
+            <!-- <button class="btn-refresh" id="refresh-logs">Refresh Logs</button> -->
+            <div id="logs-container">
+                {{-- @foreach ($logs as $log)
+                <div class="log-entry">
+                    <h4>UID: {{ $log->uid }}</h4>
+                    <p>Location: {{ $log->location }}</p>
+                    <p>Logged At: {{ $log->logged_at }}</p>
+                </div>
+                @endforeach --}}
+            </div>
         </div>
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Fetch logs immediately when page loads
+            fetchLocationLogs();
+            
+            // Set up interval to refresh logs every 10 seconds
+            setInterval(fetchLocationLogs, 3000);
+        });
+
+        function fetchLocationLogs() {
+            const logsContainer = document.getElementById('logs-container');
+            console.log("Refreshing...");
+
+            fetch('/getlocations')
+                .then(response => response.json())
+                .then(data => {
+                    logsContainer.innerHTML = '';  // Clear existing logs
+                    data.logs.forEach(log => {
+                        const logEntry = document.createElement('div');
+                        logEntry.classList.add('log-entry');
+                        logEntry.innerHTML = `<h4>UID: ${log.uid}</h4><p>Location: ${log.location}</p><p>Logged At: ${log.logged_at}</p>`;
+                        logsContainer.appendChild(logEntry);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching location logs:', error);
+                    logsContainer.innerHTML = '<p>Error loading logs. Please try again.</p>';
+                });
+        }
+    </script>
 </body>
 </html>

@@ -10,9 +10,8 @@ use App\Http\Controllers\MotherController;
 use App\Http\Controllers\NewbornController;
 use App\Http\Controllers\PairingController;
 use App\Http\Controllers\MedicationAdministrationController;
-
-
-
+use App\Http\Controllers\HardwareManagementController;
+use App\Http\Controllers\LocationLogController;
 
 
 // General Routes
@@ -128,6 +127,8 @@ Route::delete('/pairs/{id}', [PairingController::class, 'destroy'])->name('pairs
 
 // Route for displaying newborn files
 Route::get('/newbornfile', [NewbornController::class, 'showFiles'])->name('newborn.file');
+Route::get('/api/newborn/registrations', [NewbornController::class, 'getNewbornRegistrations']);
+
 
 
 Route::get('/medication-administration', [MedicationAdministrationController::class, 'index'])->name('medication-administration.index');
@@ -140,26 +141,31 @@ Route::delete('/medication-administration/delete', [MedicationAdministrationCont
 Route::post('/newborn/pair-rfid', [NewbornController::class, 'pairRfid']);
 Route::post('/save-uid', [NewbornController::class, 'saveUid']);
 
-Route::get('/locationlog', function () {
-    return view('auth.location.locationlog');
-})->name('view.locationRoute');
 
 Route::get('/report', function () {
     return view('auth.report');
 })->name('report');
 
-Route::get('/hardware-manage', function () {
-    return view('auth.hardware.hardware-manage');
-})->name('hardware');
-
 Route::get('/alert-noti', function () {
     return view('auth.alertandnoti.alert-noti');
 })->name('alert');
 
-// Existing route for the view
-Route::get('medication-overview', function () {
-    return view('auth.med.medication-overview');
-})->name('admin.medications.view'); // Renamed to avoid conflict
+
 
 // Route using the MedicationAdministrationController
 Route::get('/medication-overview', [MedicationAdministrationController::class, 'overview'])->name('medication-administration.overview');
+
+Route::get('/newborn/search', [NewbornController::class, 'search'])->name('newborn.search');
+Route::get('/rfid-search', [NewbornController::class, 'searchByRfid'])->name('rfid.search');
+
+//Hardware management route
+Route::get('/hardware-manage', [HardwareManagementController::class, 'index'])->name('hardware.manage');
+Route::post('/hardware-status', [HardwareManagementController::class, 'updateHardwareStatus']);
+
+// TROUBLESHOOT IN PROGRESS
+Route::get('/location/logs', [LocationLogController::class, 'showLocationLogs'])->name('location.log');
+
+// TROBLESHOOT IN PROGRESS
+Route::get('/getlocations', [LocationLogController::class, 'getLocationLogs'])->name('location.log.get');
+
+

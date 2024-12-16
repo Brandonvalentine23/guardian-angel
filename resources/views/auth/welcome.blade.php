@@ -136,13 +136,13 @@
     <div class="sidebar">
         <h2 class="text-lg font-semibold">GUARDIAN ANGEL, Admin</h2>
         <ul>
-            <li><a href="{{ route('view.locationRoute') }}" class="nav-link"><i class="fas fa-map-marker-alt"></i> Location Log </a></li>
+            <li><a href="{{ route('location.log') }}" class="nav-link"><i class="fas fa-map-marker-alt"></i> Location Log </a></li>
             <li><a href="{{ route('newborn.file')}}" class="nav-link"><i class="fas fa-id-card"></i> Newborn Registration Files </a></li>
             <li><a href="{{ route('manage.pair') }}" class="nav-link"><i class="fas fa-users"></i> Paired Mother-Infant Files</a></li>
-            <li><a href="{{ route('alert') }}"" class="nav-link"><i class="fas fa-bell"></i> Alerts & Notifications </a></li>
-            <li><a href="{{ route('admin.medications') }}" class="nav-link"><i class="fas fa-pills"></i> Medication Administration file </a></li>
+            <li><a href="{{ route('alert') }}"class="nav-link"><i class="fas fa-bell"></i> Alerts & Notifications </a></li>
+            <li><a href="{{ route('medication-administration.overview') }}" class="nav-link"><i class="fas fa-pills"></i> Medication Administration file </a></li>
             <li><a href="{{ route('report') }}" class="nav-link"><i class="fas fa-cog"></i> Report</a></li>
-            <li><a href="{{ route('hardware') }}" class="nav-link"><i class="fas fa-cog"></i> Hardware Management</a></li>
+            <li><a href="{{ route('hardware.manage') }}" class="nav-link"><i class="fas fa-cog"></i> Hardware Management</a></li>
             <li><a href="{{ route('register.medical') }}" class="nav-link"><i class="fas fa-cog"></i> Medical Personal Registration </a></li>
             <li><a href="{{ route('logout') }}" class="nav-link"><i class="fas fa-cog"></i> Logout </a></li>
         </ul>
@@ -190,14 +190,54 @@
                 <canvas id="revenueChart" class="chart-container"></canvas>
             </div>
 
-            <!-- Bar Chart -->
-            <div class="card col-span-3">
-                <h2 class="widget-title">Newborn Registrations</h2>
-                <canvas id="barChart" class="chart-container"></canvas>
-            </div>
+           <!-- Newborn Registrations Widget -->
+        <div class="card col-span-3">
+            <h2 class="widget-title">Newborn Registrations</h2>
+            <canvas id="barChart" class="chart-container"></canvas>
         </div>
     </div>
+</div>
 
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const ctx = document.getElementById('barChart').getContext('2d');
+
+        // Fetch data from the backend
+        fetch('/api/newborn/registrations')
+            .then(response => response.json())
+            .then(data => {
+                // Extract dates and counts from the response
+                const labels = data.map(item => item.date);
+                const counts = data.map(item => item.count);
+
+                // Render the bar chart using Chart.js
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Newborn Registrations',
+                            data: counts,
+                            backgroundColor: 'rgba(75, 181, 197, 0.5)',
+                            borderColor: 'rgba(75, 181, 197, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            })
+            .catch(error => console.error('Error fetching newborn registration data:', error));
+    });
+</script>
     <!-- Chart.js configuration -->
     <script>
         // Circular Chart (Progress)

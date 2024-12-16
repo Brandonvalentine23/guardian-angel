@@ -96,12 +96,8 @@ public function delete(Request $request, $id)
 }
 public function overview()
 {
-    $newborns = Newborn::with('medicationAdministrations')->get();
-
-    // Fetch all newborns with their medications
-        return view('auth.med.medication-overview', [
-            'newborns' => $newborns,
-        ]); 
+    $newborns = Newborn::with('medicationAdministrations')->get(); // Load medication data
+    return view('auth.med.medication-overview', compact('newborns'));
 }
 
 }

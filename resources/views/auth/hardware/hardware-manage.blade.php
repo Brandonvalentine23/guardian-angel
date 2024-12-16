@@ -65,47 +65,32 @@
             margin-bottom: 1rem;
         }
 
-        .status {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #555;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
         }
 
         .status.on {
             color: green;
+            font-weight: bold;
         }
 
-        .status.disconnected {
+        .status.off {
             color: red;
-        }
-
-        .rfid-data {
-            margin-top: 1rem;
-            background-color: #f9f9f9;
-            padding: 1rem;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .rfid-data p {
-            margin: 0.5rem 0;
-            color: #555;
+            font-weight: bold;
         }
     </style>
-
-    <script>
-        function checkHardwareStatus() {
-            // Dummy logic to simulate hardware status
-            const statusElement = document.getElementById('rfid-status');
-            const status = Math.random() > 0.5 ? 'on' : 'disconnected';
-            
-            statusElement.textContent = status === 'on' ? 'RFID Reader is ON' : 'RFID Reader is DISCONNECTED';
-            statusElement.className = `status ${status}`;
-        }
-
-        // Check status on page load
-        window.onload = checkHardwareStatus;
-    </script>
 </head>
 <body>
 
@@ -113,14 +98,14 @@
         <h2>GUARDIAN ANGEL</h2>
         <ul>
             <li><a href="{{ route('welcome') }}" class="nav-link">Home</a></li>
-            <li><a href="#" class="nav-link"><i class="fas fa-map-marker-alt"></i> Location Log </a></li>
-            <li><a href="{{ route('newborn.file')}}" class="nav-link"><i class="fas fa-id-card"></i> Newborn Registration Files </a></li>
-            <li><a href="{{ route('manage.pair') }}" class="nav-link"><i class="fas fa-users"></i> Paired Mother-Infant Files</a></li>
-            <li><a href="{{ route('alert') }}"" class="nav-link"><i class="fas fa-bell"></i> Alerts & Notifications </a></li>
-            <li><a href="{{ route('admin.medications') }}" class="nav-link"><i class="fas fa-pills"></i> Medication Administration file </a></li>
-            <li><a href="{{ route('report') }}" class="nav-link"><i class="fas fa-cog"></i> Report</a></li>
-            <li><a href="{{ route('register.medical') }}" class="nav-link"><i class="fas fa-cog"></i> Medical Personal Registration </a></li>
-            <li><a href="{{ route('logout') }}" class="nav-link"><i class="fas fa-cog"></i> Logout </a></li>
+            <li><a href="{{ route('location.log') }}" class="nav-link"><i class="fas fa-map-marker-alt"></i> Location Log </a></li>
+            <li><a href="{{ route('newborn.file')}}" class="nav-link">Newborn Registration Files</a></li>
+            <li><a href="{{ route('manage.pair') }}" class="nav-link">Paired Mother-Infant Files</a></li>
+            <li><a href="{{ route('alert') }}" class="nav-link">Alerts & Notifications</a></li>
+            <li><a href="{{ route('medication-administration.overview') }}" class="nav-link">Medication Administration File</a></li>
+            <li><a href="{{ route('report') }}" class="nav-link">Report</a></li>
+            <li><a href="{{ route('register.medical') }}" class="nav-link">Medical Personnel Registration</a></li>
+            <li><a href="{{ route('logout') }}" class="nav-link">Logout</a></li>
         </ul>
     </div>
 
@@ -128,36 +113,74 @@
         <div class="container">
             <h2>Hardware Management</h2>
 
+            <!-- Hardware Status -->
             <div class="status-section">
-                <h4>RFID Reader Status:</h4>
-                <p id="rfid-status" class="status">Checking...</p>
-            </div>
-
-            @php
-            $rfidData = [
-                (object)[
-                    'uid' => 'UID12345',
-                    'last_read' => '2024-11-15 12:30:00'
-                ],
-                (object)[
-                    'uid' => 'UID67890',
-                    'last_read' => '2024-11-15 15:45:00'
-                ],
-                (object)[
-                    'uid' => 'UID54321',
-                    'last_read' => '2024-11-14 08:20:00'
-                ]
-            ];
-            @endphp
-
-            <div class="rfid-data">
-                <h4>RFID Data Logs:</h4>
-                @foreach($rfidData as $data)
-                    <p>UID: {{ $data->uid }}, Last Read: {{ $data->last_read }}</p>
-                @endforeach
+                <h4>Hardware Status:</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Device</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Raspberry Pi Pico</td>
+                            <td id="pico-status">Loading...</td>
+                        </tr>
+                        <tr>
+                            <td>Scanning Reader</td>
+                            <td id="scanning-reader-status">Loading...</td>
+                        </tr>
+                        <tr>
+                            <td>Main Door Reader</td>
+                            <td id="main-door-reader-status">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+
+    <script>
+        async function fetchStatus() {
+            try {
+                const response = await fetch("http://192.168.0.10/status"); // Replace with actual IP
+                const statusData = await response.json();
+
+                // Update the Raspberry Pi Pico status
+                const picoStatusElement = document.getElementById('pico-status');
+                picoStatusElement.textContent = statusData.pico === 'ON' ? 'Operational' : 'Not Operational';
+                picoStatusElement.className = statusData.pico.toLowerCase();
+
+                // Update the Scanning Reader status
+                const scanningReaderStatusElement = document.getElementById('scanning-reader-status');
+                scanningReaderStatusElement.textContent = statusData.rfid_detection === 'ON' ? 'Operational' : 'Not Operational';
+                scanningReaderStatusElement.className = statusData.rfid_detection.toLowerCase();
+
+                // Update the Main Door Reader status
+                const mainDoorReaderStatusElement = document.getElementById('main-door-reader-status');
+                mainDoorReaderStatusElement.textContent = statusData.rfid_location === 'ON' ? 'Operational' : 'Not Operational';
+                mainDoorReaderStatusElement.className = statusData.rfid_location.toLowerCase();
+            } catch (error) {
+                console.error("Error fetching status:", error);
+
+                // Handle errors by showing an error state
+                document.getElementById('pico-status').textContent = "Error";
+                document.getElementById('pico-status').className = "off";
+                document.getElementById('scanning-reader-status').textContent = "Error";
+                document.getElementById('scanning-reader-status').className = "off";
+                document.getElementById('main-door-reader-status').textContent = "Error";
+                document.getElementById('main-door-reader-status').className = "off";
+            }
+        }
+
+        // Fetch the status on page load
+        fetchStatus();
+
+        // Auto-refresh the status every 10 seconds
+        setInterval(fetchStatus, 10000);
+    </script>
 
 </body>
 </html>
