@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discharge Report | Guardian Angels Dashboard</title>
+    <title>Discharge Page</title>
 
+    <!-- Fonts and Libraries -->
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet">
 
+    <!-- Styles -->
     <style>
         body {
-            background-color: #E3F2FD;
+            background-color: #E3F2FD; /* Baby blue background */
             font-family: 'Figtree', sans-serif;
             display: flex;
             min-height: 100vh;
@@ -17,7 +19,7 @@
         }
 
         .sidebar {
-            background-color: #4bb5c5;
+            background-color: #4bb5c5; /* Sidebar color matching theme */
             color: white;
             width: 200px;
             min-height: 100vh;
@@ -36,10 +38,11 @@
             padding: 0.75rem;
             border-radius: 10px;
             transition: background-color 0.3s;
+            text-decoration: none;
         }
 
         .sidebar .nav-link:hover {
-            background-color: #3949AB;
+            background-color: #3949AB; /* Darker blue on hover */
         }
 
         .main-content {
@@ -48,161 +51,147 @@
             padding: 2rem;
         }
 
-        .container {
+        .form-container {
             background-color: white;
-            border-radius: 20px;
             padding: 2rem;
+            border-radius: 20px;
             box-shadow: 0px 14px 34px 0px rgba(0, 0, 0, 0.08);
-            max-width: 800px;
+            max-width: 600px;
             margin: auto;
         }
 
-        .report-section {
-            margin-bottom: 2rem;
+        .form-container h1 {
+            color: #1976D2;
+            text-align: center;
+            margin-bottom: 1.5rem;
         }
 
-        .report-section h4 {
+        .form-container label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #1976D2;
+        }
+
+        .form-container input, .form-container textarea {
+            width: 100%;
+            padding: 0.75rem;
             margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 10px;
         }
 
-        .report-section p {
-            margin: 0.5rem 0;
-            color: #555;
-        }
-
-        .button-group {
-            text-align: right;
-            margin-top: 2rem;
-        }
-
-        .print-button {
-            padding: 0.75rem 1.5rem;
-            background-color: #FF7043;
+        .form-container button {
+            display: block;
+            background-color: #4bb5c5;
             color: white;
             border: none;
+            padding: 1rem;
             border-radius: 10px;
-            font-size: 1.2rem;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: bold;
             cursor: pointer;
         }
 
-        .print-button:hover {
-            background-color: #E64A19;
+        .form-container button:hover {
+            background-color: #1976D2;
+        }
+
+        /* Mobile responsiveness adjustments */
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+            .sidebar {
+                display: none;
+            }
         }
     </style>
-
-    <script>
-        function printReport() {
-            window.print();
-        }
-    </script>
 </head>
 <body>
-
+    <!-- Sidebar -->
     <div class="sidebar">
-        <h2>GUARDIAN ANGEL,Admin</h2>
+        <h2 class="text-lg font-semibold">GUARDIAN ANGEL</h2>
         <ul>
-            <li><a href="{{ route('welcome') }}" class="nav-link">Home</a></li>
-            <li><a href="#" class="nav-link"><i class="fas fa-map-marker-alt"></i> Location Log </a></li>
-            <li><a href="{{ route('newborn.file')}}" class="nav-link"><i class="fas fa-id-card"></i> Newborn Registration Files </a></li>
-            <li><a href="{{ route('manage.pair') }}" class="nav-link"><i class="fas fa-users"></i> Paired Mother-Infant Files</a></li>
-            <li><a href="{{ route('alert') }}"" class="nav-link"><i class="fas fa-bell"></i> Alerts & Notifications </a></li>
-            <li><a href="{{ route('medication-administration.overview') }}" class="nav-link"><i class="fas fa-pills"></i> Medication Administration file </a></li>
-            <li><a href="{{ route('hardware') }}" class="nav-link"><i class="fas fa-cog"></i> Hardware Management</a></li>
-            <li><a href="{{ route('register.medical') }}" class="nav-link"><i class="fas fa-cog"></i> Medical Personal Registration </a></li>
-            <li><a href="{{ route('logout') }}" class="nav-link"><i class="fas fa-cog"></i> Logout </a></li>
+            <li><a href="{{ route('welcome.MP') }}" class="nav-link">Home</a></li>  
+            <li><a href="{{ route('newborn.reg') }}" class="nav-link">Newborn Registration and Pairing</a></li>
+            <li><a href="{{ route('motherinfant.pair')}}" class="nav-link">Mother's Registration</a></li>
+            <li><a href="{{ route('medicalpersonnel.notifications') }}" class="nav-link">Alerts & Notifications</a></li>
+            <li><a href="{{route('medication-administration.index')}}" class="nav-link">Medication Administration</a></li>
+             <li><a href="{{ route('logout') }}" class="nav-link">Logout</a></li>
         </ul>
     </div>
 
+    <!-- Main Content -->
     <div class="main-content">
-        <div class="container">
-            <h2>Discharge Report</h2>
-
-            @php
-            $motherData = (object)[
-                'full_name' => 'Jane Doe',
-                'dob' => '1990-05-15',
-                'id_card' => '901234567890',
-                'phone' => '+60123456789',
-                'email' => 'jane.doe@example.com',
-                'blood_type' => 'O+',
-                'allergies' => 'None',
-                'pregnancy_history' => 'No complications'
-            ];
-
-            $newbornData = (object)[
-                'full_name' => 'Baby Doe',
-                'dob' => '2024-11-10',
-                'gender' => 'Male',
-                'birth_weight' => '3.2 kg',
-                'blood_type' => 'O+',
-                'health_conditions' => 'Healthy'
-            ];
-
-            $healthRecords = [
-                'Initial Checkup - Healthy',
-                'Follow-up Visit - No issues'
-            ];
-
-            $medicationRecords = [
-                (object)[
-                    'medication' => 'Vitamin K',
-                    'time' => '2024-11-10 09:30',
-                    'frequency' => 'Single Dose'
-                ],
-                (object)[
-                    'medication' => 'Hepatitis B Vaccine',
-                    'time' => '2024-11-11 10:00',
-                    'frequency' => 'Single Dose'
-                ]
-            ];
-            @endphp
-
-            <!-- Mother's Data Section -->
-            <div class="report-section">
-                <h4>Mother's Information</h4>
-                <p>Full Name: {{ $motherData->full_name }}</p>
-                <p>Date of Birth: {{ $motherData->dob }}</p>
-                <p>Identity Card Number: {{ $motherData->id_card }}</p>
-                <p>Phone Number: {{ $motherData->phone }}</p>
-                <p>Email: {{ $motherData->email }}</p>
-                <p>Blood Type: {{ $motherData->blood_type }}</p>
-                <p>Allergies: {{ $motherData->allergies }}</p>
-                <p>Pregnancy History: {{ $motherData->pregnancy_history }}</p>
-            </div>
-
-            <!-- Newborn's Data Section -->
-            <div class="report-section">
-                <h4>Newborn's Information</h4>
-                <p>Full Name: {{ $newbornData->full_name }}</p>
-                <p>Date of Birth: {{ $newbornData->dob }}</p>
-                <p>Gender: {{ $newbornData->gender }}</p>
-                <p>Birth Weight: {{ $newbornData->birth_weight }}</p>
-                <p>Blood Type: {{ $newbornData->blood_type }}</p>
-                <p>Health Conditions: {{ $newbornData->health_conditions }}</p>
-            </div>
-
-            <!-- Health Records Section -->
-            <div class="report-section">
-                <h4>Health Records</h4>
-                @foreach($healthRecords as $record)
-                    <p>{{ $record }}</p>
-                @endforeach
-            </div>
-
-            <!-- Medication Records Section -->
-            <div class="report-section">
-                <h4>Medication Records</h4>
-                @foreach($medicationRecords as $record)
-                    <p>Medication: {{ $record->medication }}, Administration Time: {{ $record->time }}, Frequency: {{ $record->frequency }}</p>
-                @endforeach
-            </div>
-
-            <!-- Print Button -->
-            <div class="button-group">
-                <button class="print-button" onclick="printReport()">Print Report</button>
-            </div>
+        <div class="form-container">
+            <h1>Discharge Patient</h1>
+            <form method="POST" action="{{ route('discharge.handle') }}">
+                @csrf
+                <label for="patient_name">Patient Name</label>
+                <input type="text" id="patient_name" name="patient_name" placeholder="Enter patient name" required 
+                       style="width: 100%; padding: 0.5rem; border-radius: 10px; border: 1px solid #ccc; margin-bottom: 1rem;">
+            
+                <label for="rfid_uid">RFID UID</label>
+                <input type="text" id="rfid_uid" name="rfid_uid" placeholder="RFID UID will appear here" readonly
+                       style="width: 100%; padding: 0.5rem; border-radius: 10px; border: 1px solid #ccc; margin-bottom: 1rem;">
+            
+                <label for="discharge_date">Discharge Date</label>
+                <input type="date" id="discharge_date" name="discharge_date" required
+                       style="width: 100%; padding: 0.5rem; border-radius: 10px; border: 1px solid #ccc; margin-bottom: 1rem;">
+            
+                <label for="notes">Additional Notes</label>
+                <textarea id="notes" name="notes" rows="4" placeholder="Optional" 
+                          style="width: 100%; padding: 0.5rem; border-radius: 10px; border: 1px solid #ccc; margin-bottom: 1rem;"></textarea>
+            
+                <button type="button" id="rfid-search-btn" style="margin-top: 1rem; background-color: #4bb5c5; color: white; border: none; padding: 0.75rem; border-radius: 10px; cursor: pointer;">
+                    RFID Search
+                </button>
+                <button type="submit" style="margin-top: 1rem; background-color: #4bb5c5; color: white; border: none; padding: 0.75rem; border-radius: 10px; cursor: pointer;">
+                    Submit
+                </button>
+            </form>
         </div>
     </div>
 
+    <script>
+        document.getElementById('rfid-search-btn').addEventListener('click', function () {
+            alert('Please scan the RFID tag.');
+    
+            fetch('http://192.168.1.101/get-uid') // Replace with your Raspberry Pi Pico's IP address
+                .then(response => response.json())
+                .then(data => {
+                    if (data.uid) {
+                        alert('RFID UID detected: ' + data.uid);
+    
+                        // Fetch newborn data using the UID
+                        return fetch('/rfid-search?uid=' + encodeURIComponent(data.uid));
+                    } else {
+                        throw new Error('No RFID UID detected.');
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.newborn) {
+                        // Populate form fields with the fetched data
+                        document.getElementById('patient_name').value = data.newborn.mother_name || 'Not Assigned';
+                        document.getElementById('rfid_uid').value = data.newborn.rfid_uid;
+                    } else {
+                        // If no records are found
+                        alert('No records found for this RFID UID.');
+                        document.getElementById('patient_name').value = '';
+                        document.getElementById('rfid_uid').value = '';
+                    }
+                })
+                .catch(error => {
+                    // Handle errors gracefully
+                    alert('Error: ' + error.message);
+                    document.getElementById('patient_name').value = '';
+                    document.getElementById('rfid_uid').value = '';
+                });
+        });
+    </script>
 </body>
 </html>

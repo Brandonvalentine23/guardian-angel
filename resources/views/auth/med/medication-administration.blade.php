@@ -138,14 +138,13 @@
 
     <!-- Sidebar -->
     <div class="sidebar">
-        <h2 class="text-lg font-semibold">GUARDIAN ANGEL</h2>
+        <h2 class="text-lg font-semibold">GUARDIAN ANGEL </h2>
         <ul>
             <li><a href="{{ route('welcome.MP') }}" class="nav-link">Home</a></li>  
             <li><a href="{{ route('newborn.reg') }}" class="nav-link"><i class="fas fa-id-card"></i> Newborn Registration and Pairing</a></li>
             <li><a href="{{ route('motherinfant.pair')}}" class="nav-link"><i class="fas fa-users"></i> Mother's Registration</a></li>
-            <li><a href="{{ route('alert') }}" class="nav-link"><i class="fas fa-bell"></i> Alerts & Notifications</a></li>
-            <li><a href="#" class="nav-link"><i class="fas fa-map-marker-alt"></i> Location Tracking</a></li>
-            <li><a href="{{ route('logout') }}" class="nav-link"><i class="fas fa-cog"></i> Logout</a></li>
+            <li><a href="{{ route('medicalpersonnel.notifications') }}" class="nav-link"><i class="fas fa-bell"></i> Alerts & Notifications</a></li>
+             <li><a href="{{ route('logout') }}" class="nav-link"><i class="fas fa-cog"></i> Logout</a></li>
         </ul>
     </div>
 
@@ -189,7 +188,7 @@
                 <input type="text" name="birth_weight" id="birth_weight" class="form-control" value="{{ $newborn->birth_weight ?? '' }}" readonly>
             </div>
             <div class="form-group">
-                <label for="gestational_age">Gestational Age</label>
+                <label for="gestational_age">Age</label>
                 <input type="text" name="gestational_age" id="gestational_age" class="form-control" placeholder="Enter age in weeks" required>
             </div>
         

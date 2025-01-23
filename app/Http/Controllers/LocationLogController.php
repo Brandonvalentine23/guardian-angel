@@ -20,30 +20,36 @@ class LocationLogController extends Controller
 
     // Store RFID log
     public function storeLocationLog(Request $request)
-    {
-        // Log the incoming request data for debugging
-        Log::info('Incoming RFID request', ['uid' => $request->input('uid')]);
+{
+    // Log the incoming request data for debugging
+    Log::info('Incoming RFID request', ['uid' => $request->input('uid')]);
 
-        // Validate incoming request for UID
-        $validated = $request->validate([
-            'uid' => 'required|string',
-        ]);
+    // Validate the incoming request
+    $validated = $request->validate([
+        'uid' => 'required|string',
+    ]);
 
-        // Add the location name ("Main Door") and the timestamp
-        LocationLog::create([
+    try {
+        // Add the location name and timestamp
+        $log = LocationLog::create([
             'uid' => $validated['uid'],
-            'location' => 'Main Door',  // Location name
-            'logged_at' => now(),       // Current timestamp
+            'location' => 'Main Door', // Example location
+            'logged_at' => now(),      // Current timestamp
         ]);
+
+         // Log the created entry
+         Log::info('Location Log Created:', $log->toArray());
+        // Store the new log in the session to pass to welcomeMP
+        session()->flash('latestLocationLog', $log);
 
         return response()->json(['message' => 'Location logged successfully']);
+    } catch (\Exception $e) {
+        // Log the error if the creation fails
+        Log::error('Error creating location log:', ['error' => $e->getMessage()]);
 
-        // // Fake the response with a 200 OK without performing any database operations
-        // return response()->json([
-        //     'message' => 'Location logged successfully (Fake response)',
-        //     'status' => 200  // You can include any custom field to signify success
-        // ], 200);
+        return response()->json(['message' => 'Failed to log location'], 500);
     }
+}
 
     // Get all RFID logs for the location as JSON (API use)
     public function getLocationLogs()
@@ -54,4 +60,16 @@ class LocationLogController extends Controller
         // Return logs as a JSON response for API use
         return response()->json(['logs' => $logs]);
     }
+    public function showDashboard()
+{
+    // Example of fetching the latest location log
+    $latestLog = LocationLog::latest()->first();
+
+    $locationAlert = $latestLog ? [
+        'uid' => $latestLog->uid,
+        'location' => $latestLog->location,
+    ] : null;
+
+    return view('welcomeMP', compact('locationAlert'));
+}
 }

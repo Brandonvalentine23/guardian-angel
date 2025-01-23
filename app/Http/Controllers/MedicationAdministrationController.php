@@ -19,7 +19,7 @@ class MedicationAdministrationController extends Controller
     // Fetch all newborns with their medications
         return view('auth.med.medicine-view', [
             'newborns' => $newborns,
-        ]); 
+        ]);
     }
 
     // Method to store medication administration details

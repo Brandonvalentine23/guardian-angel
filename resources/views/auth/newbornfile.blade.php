@@ -93,12 +93,13 @@
     <h2 class="text-lg font-semibold">GUARDIAN ANGEL, Admin</h2>
     <ul>
         <li><a href="{{ route('welcome') }}" class="nav-link">Home</a></li>
-        <li><a href="{{ route('location.log') }}" class="nav-link"><i class="fas fa-map-marker-alt"></i> Location Log </a></li>        <li><a href="{{ route('manage.pair') }}" class="nav-link"><i class="fas fa-users"></i> Paired Mother-Infant Files</a></li>
-        <li><a href="#" class="nav-link"><i class="fas fa-bell"></i> Alerts & Notifications</a></li>
-        <li><a href="{{ route('medication-administration.overview') }}" class="nav-link"><i class="fas fa-pills"></i> Medication Administration file</a></li>
-        <li><a href="#" class="nav-link"><i class="fas fa-cog"></i> Settings</a></li>
-        <li><a href="{{ route('register.medical') }}" class="nav-link"><i class="fas fa-cog"></i> Medical Personal Registration</a></li>
-        <li><a href="{{ route('logout') }}" class="nav-link"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        <li><a href="{{ route('manage.pair') }}" class="nav-link"><i class="fas fa-users"></i> Paired Mother-Infant Files</a></li>
+        <li><a href="{{ route('medication-administration.overview') }}" class="nav-link"><i class="fas fa-pills"></i> Medication Administration file </a></li> 
+        <li><a href="{{ route('location.log') }}" class="nav-link"><i class="fas fa-map-marker-alt"></i> Location Log </a></li>
+        <li><a href="{{ route('alert.admin') }}"class="nav-link"><i class="fas fa-bell"></i> Alerts & Notifications </a></li> 
+        <li><a href="{{ route('hardware.manage') }}" class="nav-link"><i class="fas fa-cog"></i> Hardware Management</a></li>
+        <li><a href="{{ route('register.medical') }}" class="nav-link"><i class="fas fa-cog"></i> Medical Personal Registration </a></li>
+        <li><a href="{{ route('logout') }}" class="nav-link"><i class="fas fa-cog"></i> Logout </a></li>
     </ul>
 </div>
 
@@ -178,7 +179,7 @@
         const tableBody = document.querySelector('.table tbody'); // Main table body
 
         alert('Please scan the RFID tag.');
-        fetch('http://192.168.0.10/get-uid')  // Replace with your Raspberry Pi Pico's IP address
+        fetch('http://192.168.1.100/get-uid')  // Replace with your Raspberry Pi Pico's IP address
             .then(response => response.json())
             .then(data => {
                 if (data.uid) {

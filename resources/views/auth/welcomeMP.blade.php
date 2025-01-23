@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guardian Angels Dashboard</title>
 
-    <!-- Fonts and Tailwind CSS -->
+    <!-- Fonts and Libraries -->
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js -->
-    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 -->
+
     <!-- Styles -->
     <style>
         body {
@@ -136,13 +137,12 @@
     <div class="sidebar">
         <h2 class="text-lg font-semibold">GUARDIAN ANGEL, Medical Personnel</h2>
         <ul> 
-            <li><a href="{{ route('welcome.MP') }}" class="nav-link">Home</a></li>  
-            <li><a href="{{ route('newborn.reg') }}" class="nav-link"><i class="fas fa-id-card"></i> Newborn Registration and Pairing</a></li>
-            <li><a href="{{ route('motherinfant.pair')}}" class="nav-link"><i class="fas fa-users"></i> Mother's Registration</a></li>
-            <li><a href="{{ route('alert') }}" class="nav-link"><i class="fas fa-bell"></i> Alerts & Notifications</a></li>
-            <li><a href="{{route('medication-administration.index')}}" class="nav-link"><i class="fas fa-pills"></i> Medication Administration</a></li>
-            <li><a href="#" class="nav-link"><i class="fas fa-map-marker-alt"></i> Location Tracking</a></li>
-            <li><a href="{{ route('logout') }}" class="nav-link"><i class="fas fa-cog"></i> Logout</a></li>
+            <li><a href="{{ route('motherinfant.pair')}}" class="nav-link">Mother's Registration</a></li>
+            <li><a href="{{ route('newborn.reg') }}" class="nav-link">Newborn Registration and Pairing</a></li>
+            <li><a href="{{route('medication-administration.index')}}" class="nav-link">Medication Administration</a></li>
+            <li><a href="{{ route('medicalpersonnel.notifications') }}" class="nav-link">Alerts & Notifications</a></li>  
+            <li><a href="{{ route('report') }}" class="nav-link"><i class="fas fa-cog"></i> Report</a></li>
+            <li><a href="{{ route('logout') }}" class="nav-link">Logout</a></li>
         </ul>
     </div>
 
@@ -194,6 +194,51 @@
             </div>
         </div>
     </div>
+
+    <!-- SweetAlert2 for Notifications -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Medication Alerts (existing functionality remains untouched)
+            @if (!empty($medicationAlerts) && $medicationAlerts->count() > 0)
+                Swal.fire({
+                    title: 'Medication Alert',
+                    html: `
+                        <ul style="text-align: left;">
+                            @foreach ($medicationAlerts as $alert)
+                                <li>
+                                    <strong>{{ $alert->medication_name }}</strong><br>
+                                    Scheduled at: {{ $alert->administration_time }}<br>
+                                    Mother: {{ optional($alert->newborn)->mother_name ?? 'Unknown' }}
+                                </li>
+                            @endforeach
+                        </ul>
+                    `,
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                    timer: 10000 // Auto-close after 10 seconds
+                });
+            @endif
+    
+            // Location Log Alert (new functionality)
+            @if (!empty($latestLocationLog))
+                Swal.fire({
+                    title: 'Location Alert',
+                    html: `
+                        <ul style="text-align: left;">
+                            <li>
+                                <b>UID:</b> {{ $latestLocationLog->uid }}<br>
+                                <b>Location:</b> {{ $latestLocationLog->location }}<br>
+                                <b>Logged At:</b> {{ $latestLocationLog->logged_at }}
+                            </li>
+                        </ul>
+                    `,
+                    icon: 'info',
+                    confirmButtonText: 'OK',
+                    timer: 10000 // Auto-close after 10 seconds
+                });
+            @endif
+        });
+    </script>
 
     <!-- Chart.js configuration -->
     <script>
@@ -262,5 +307,13 @@
             options: { responsive: true }
         });
     </script>
+
+<script>
+    // Automatically refresh the page every 10 seconds
+    setInterval(function () {
+        window.location.reload();
+    }, 10000); // 10000 milliseconds = 10 seconds
+</script>
+
 </body>
 </html>

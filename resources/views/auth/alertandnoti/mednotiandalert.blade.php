@@ -64,23 +64,34 @@
             border-radius: 10px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
         }
+
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #1976D2;
+        }
     </style>
 </head>
 <body>
-
     <!-- Sidebar -->
     <div class="sidebar">
-        <h2>GUARDIAN ANGEL</h2>
+        <h2>GUARDIAN ANGEL Medical Personel</h2>
         <ul>
-            <li><a href="{{ route('welcome') }}" class="nav-link">Home</a></li>
-            <li><a href="{{ route('location.log') }}" class="nav-link">Location Log</a></li>
-            <li><a href="{{ route('newborn.file')}}" class="nav-link">Newborn Registration Files</a></li>
-            <li><a href="{{ route('manage.pair') }}" class="nav-link">Paired Mother-Infant Files</a></li>
-            <li><a href="{{ route('medication-administration.overview') }}" class="nav-link">Medication Administration</a></li>
-            <li><a href="{{ route('report') }}" class="nav-link">Report</a></li>
-            <li><a href="{{ route('hardware.manage') }}" class="nav-link">Hardware Management</a></li>
-            <li><a href="{{ route('register.medical') }}" class="nav-link">Medical Personal Registration</a></li>
-            <li><a href="{{ route('logout') }}" class="nav-link">Logout</a></li>
+            <li><a href="{{ route('welcome.MP') }}" class="nav-link">Home</a></li>  
+            <li><a href="{{ route('newborn.reg') }}" class="nav-link">Newborn Registration and Pairing</a></li>
+            <li><a href="{{ route('motherinfant.pair') }}" class="nav-link">Mother's Registration</a></li>
+            <li><a href="{{ route('medicalpersonnel.notifications') }}" class="nav-link">Alerts & Notifications</a></li>
+            <li><a href="{{ route('medication-administration.index') }}" class="nav-link">Medication Administration</a></li>
+             <li><a href="{{ route('logout') }}" class="nav-link">Logout</a></li>
         </ul>
     </div>
 
@@ -88,8 +99,8 @@
     <div class="main-content">
         <div class="container">
             <h2>Alerts & Notifications</h2>
-    
-            <!-- Pending Medications Section -->
+
+            <!-- Pending Medications -->
             <div class="card mb-4">
                 <div class="card-header bg-warning text-dark">
                     <h2>Pending Medications</h2>
@@ -114,8 +125,8 @@
                     @endif
                 </div>
             </div>
-    
-            <!-- Scheduled Medications Section -->
+
+            <!-- Upcoming Medications -->
             <div class="card mb-4">
                 <div class="card-header bg-primary text-white">
                     <h2>Scheduled Medications</h2>
@@ -125,13 +136,12 @@
                         <ul>
                             @foreach ($upcomingMedications as $medication)
                                 <li>
-                                    <p><strong>Mother:</strong> {{ optional($medication->newborn)->mother_name ?? 'Unknown' }}</p>
                                     <p><strong>Medication:</strong> {{ $medication->medication_name }}</p>
                                     <p><strong>Scheduled at:</strong> {{ $medication->administration_time }}</p>
+                                    <p><strong>Mother:</strong> {{ optional($medication->newborn)->mother_name ?? 'Unknown' }}</p>
                                     <p><strong>Frequency:</strong> {{ $medication->frequency }}</p>
                                     <p><strong>Route:</strong> {{ $medication->route }}</p>
                                     <p><strong>Dose:</strong> {{ $medication->dose }}</p>
-                                    <p><strong>Status:</strong> Scheduled</p>
                                 </li>
                             @endforeach
                         </ul>
@@ -146,7 +156,7 @@
     <!-- SweetAlert2 for Notifications -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            @if (!empty($medicationAlerts) && $medicationAlerts->count() > 0)
+            @if ($medicationAlerts->count() > 0)
                 Swal.fire({
                     title: 'Medication Alert',
                     html: `
@@ -155,7 +165,10 @@
                                 <li>
                                     <strong>{{ $alert->medication_name }}</strong><br>
                                     Scheduled at: {{ $alert->administration_time }}<br>
-                                    Mother: {{ optional($alert->newborn)->mother_name ?? 'Unknown' }}
+                                    Mother: {{ optional($alert->newborn)->mother_name ?? 'Unknown' }}<br>
+                                    Frequency: {{ $alert->frequency }}<br>
+                                    Route: {{ $alert->route }}<br>
+                                    Dose: {{ $alert->dose }}
                                 </li>
                             @endforeach
                         </ul>

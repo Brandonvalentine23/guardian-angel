@@ -12,8 +12,9 @@ use App\Http\Controllers\PairingController;
 use App\Http\Controllers\MedicationAdministrationController;
 use App\Http\Controllers\HardwareManagementController;
 use App\Http\Controllers\LocationLogController;
-
-
+use App\Http\Controllers\AlertAndNotificationController;
+use App\Http\Controllers\MedicalNotificationController;
+use App\Http\Controllers\DischargeController;
 // General Routes
 // General Routes
 Route::get('/', function () {
@@ -135,7 +136,7 @@ Route::get('/medication-administration', [MedicationAdministrationController::cl
 Route::get('/medication-administration/create', [MedicationAdministrationController::class, 'create'])->name('medication-administration.create');
 Route::post('/medication-administration/store', [MedicationAdministrationController::class, 'store'])->name('medication-administration.store');
 Route::post('/medication-administration/{id}/mark-as-done', [MedicationAdministrationController::class, 'markAsDone'])->name('medication-administration.markAsDone');
-Route::delete('/medication-administration/delete', [MedicationAdministrationController::class, 'delete'])->name('medication-administration.delete');
+Route::delete('/medication-administration/delete/{id}', [MedicationAdministrationController::class, 'delete'])->name('medication-administration.delete');
 
 // routes/api.php
 Route::post('/newborn/pair-rfid', [NewbornController::class, 'pairRfid']);
@@ -145,10 +146,6 @@ Route::post('/save-uid', [NewbornController::class, 'saveUid']);
 Route::get('/report', function () {
     return view('auth.report');
 })->name('report');
-
-Route::get('/alert-noti', function () {
-    return view('auth.alertandnoti.alert-noti');
-})->name('alert');
 
 
 
@@ -167,5 +164,20 @@ Route::get('/location/logs', [LocationLogController::class, 'showLocationLogs'])
 
 // TROBLESHOOT IN PROGRESS
 Route::get('/getlocations', [LocationLogController::class, 'getLocationLogs'])->name('location.log.get');
+
+Route::get('/next-medication', [MedicationAdministrationController::class, 'getNextMedication']);
+Route::get('/medication-alerts', [MedicationAdministrationController::class, 'getMedicationAlerts']);
+
+
+Route::get('/alert-notification', [AlertAndNotificationController::class, 'index'])->name('alert.admin');
+Route::get('/welcomeMP', [AlertAndNotificationController::class, 'welcomeMP'])->name('welcome.MP');
+Route::get('/mednotiandalert', [MedicalNotificationController::class, 'index'])->name('medicalpersonnel.notifications');
+// Route::get('/mednotiandalert', [MedicalNotificationController::class, 'index'])->name('medicalpersonnel.notifications');
+
+// Handle form submission
+Route::post('/discharge/handle', [DischargeController::class, 'handleDischarge'])->name('discharge.handle');
+
+// Display patient details
+Route::get('/discharge/show/{rfid_uid}', [DischargeController::class, 'showPatientDetails'])->name('discharge');
 
 

@@ -98,14 +98,13 @@
         <h2>GUARDIAN ANGEL</h2>
         <ul>
             <li><a href="{{ route('welcome') }}" class="nav-link">Home</a></li>
+            <li><a href="{{ route('newborn.file')}}" class="nav-link"><i class="fas fa-id-card"></i> Newborn Registration Files </a></li>
+            <li><a href="{{ route('manage.pair') }}" class="nav-link"><i class="fas fa-users"></i> Paired Mother-Infant Files</a></li>
+            <li><a href="{{ route('medication-administration.overview') }}" class="nav-link"><i class="fas fa-pills"></i> Medication Administration file </a></li> 
             <li><a href="{{ route('location.log') }}" class="nav-link"><i class="fas fa-map-marker-alt"></i> Location Log </a></li>
-            <li><a href="{{ route('newborn.file')}}" class="nav-link">Newborn Registration Files</a></li>
-            <li><a href="{{ route('manage.pair') }}" class="nav-link">Paired Mother-Infant Files</a></li>
-            <li><a href="{{ route('alert') }}" class="nav-link">Alerts & Notifications</a></li>
-            <li><a href="{{ route('medication-administration.overview') }}" class="nav-link">Medication Administration File</a></li>
-            <li><a href="{{ route('report') }}" class="nav-link">Report</a></li>
-            <li><a href="{{ route('register.medical') }}" class="nav-link">Medical Personnel Registration</a></li>
-            <li><a href="{{ route('logout') }}" class="nav-link">Logout</a></li>
+            <li><a href="{{ route('alert.admin') }}"class="nav-link"><i class="fas fa-bell"></i> Alerts & Notifications </a></li> 
+            <li><a href="{{ route('register.medical') }}" class="nav-link"><i class="fas fa-cog"></i> Medical Personal Registration </a></li>
+            <li><a href="{{ route('logout') }}" class="nav-link"><i class="fas fa-cog"></i> Logout </a></li>
         </ul>
     </div>
 
@@ -145,7 +144,7 @@
     <script>
         async function fetchStatus() {
             try {
-                const response = await fetch("http://192.168.0.10/status"); // Replace with actual IP
+                const response = await fetch("http://192.168.1.100/status"); // Replace with actual IP
                 const statusData = await response.json();
 
                 // Update the Raspberry Pi Pico status
