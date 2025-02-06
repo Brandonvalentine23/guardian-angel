@@ -15,6 +15,7 @@ use App\Http\Controllers\LocationLogController;
 use App\Http\Controllers\AlertAndNotificationController;
 use App\Http\Controllers\MedicalNotificationController;
 use App\Http\Controllers\DischargeController;
+use App\Http\Controllers\DashboardController;
 // General Routes
 // General Routes
 Route::get('/', function () {
@@ -181,3 +182,11 @@ Route::post('/discharge/handle', [DischargeController::class, 'handleDischarge']
 Route::get('/discharge/show/{rfid_uid}', [DischargeController::class, 'showPatientDetails'])->name('discharge');
 
 
+
+
+// Dashboard route
+Route::get('/welcomeMP', [DashboardController::class, 'index'])->name('welcome.MP'); // Load the dashboard
+Route::post('/fetch-info', [DashboardController::class, 'fetchInfo'])->name('dashboard.fetchInfo');
+
+Route::post('/rfid-info', [DashboardController::class, 'fetchInfo'])->name('rfid.info'); // Fetch RFID details
+Route::get('/welcomeMP', [DashboardController::class, 'index'])->name('welcome.MP');

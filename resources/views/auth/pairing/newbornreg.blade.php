@@ -133,7 +133,7 @@ function pairRfidTag() {
     alert('Please scan the RFID tag...');
 
     // Fetch the UID from the Pico W
-    fetch('http://192.168.1.100/get-uid')  // Ensure the correct IP address
+    fetch('http://192.168.1.101/get-uid')  // Ensure the correct IP address
         .then(response => {
             if (!response.ok) {
                 throw new Error("Network response was not ok");

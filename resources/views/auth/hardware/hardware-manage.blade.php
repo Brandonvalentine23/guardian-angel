@@ -144,7 +144,7 @@
     <script>
         async function fetchStatus() {
             try {
-                const response = await fetch("http://192.168.1.100/status"); // Replace with actual IP
+                const response = await fetch("http://192.168.1.101/status"); // Replace with actual IP
                 const statusData = await response.json();
 
                 // Update the Raspberry Pi Pico status

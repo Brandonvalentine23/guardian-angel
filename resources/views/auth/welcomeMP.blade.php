@@ -52,12 +52,41 @@
             padding: 2rem;
         }
 
+        .dashboard-header {
+            margin-bottom: 2rem;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0px 14px 34px 0px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            gap: 1rem;
+        }
+
+        .search-bar input {
+            border: none;
+            outline: none;
+            flex-grow: 1;
+            padding: 0.75rem;
+            border-radius: 10px;
+        }
+
+        .search-bar button {
+            background-color: #4bb5c5;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            color: white;
+        }
+
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1.5rem;
-            max-width: 1200px;
-            margin: auto;
         }
 
         .card {
@@ -84,43 +113,8 @@
             height: 180px;
         }
 
-        .circular-chart {
-            height: 150px;
-            width: 150px;
-        }
-
-        .search-bar {
-            display: flex;
-            align-items: center;
-            border-radius: 20px;
-            background-color: white;
-            box-shadow: 0px 14px 34px 0px rgba(0, 0, 0, 0.05);
-            padding: 0.75rem;
-            grid-column: span 3;
-            margin-bottom: 2rem;
-        }
-
-        .search-bar input {
-            border: none;
-            outline: none;
-            flex-grow: 1;
-            padding: 0.5rem;
-            border-radius: 10px;
-        }
-
-        .search-bar button {
-            background-color: #FF7043;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 10px;
-            color: white;
-        }
-
         /* Mobile responsiveness adjustments */
         @media (max-width: 768px) {
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-            }
             .main-content {
                 margin-left: 0;
                 width: 100%;
@@ -132,188 +126,149 @@
     </style>
 </head>
 <body>
-
     <!-- Sidebar -->
     <div class="sidebar">
-        <h2 class="text-lg font-semibold">GUARDIAN ANGEL, Medical Personnel</h2>
-        <ul> 
-            <li><a href="{{ route('motherinfant.pair')}}" class="nav-link">Mother's Registration</a></li>
-            <li><a href="{{ route('newborn.reg') }}" class="nav-link">Newborn Registration and Pairing</a></li>
-            <li><a href="{{route('medication-administration.index')}}" class="nav-link">Medication Administration</a></li>
-            <li><a href="{{ route('medicalpersonnel.notifications') }}" class="nav-link">Alerts & Notifications</a></li>  
-            <li><a href="{{ route('report') }}" class="nav-link"><i class="fas fa-cog"></i> Report</a></li>
+        <h2 class="text-lg font-semibold">GUARDIAN ANGEL</h2>
+        <ul>
+            <li><a href="{{ route('motherinfant.pair') }}" class="nav-link">Mother's Registration</a></li>
+            <li><a href="{{ route('newborn.reg') }}" class="nav-link">Newborn Registration</a></li>
+            <li><a href="{{ route('medication-administration.index') }}" class="nav-link">Medication Administration</a></li>
+            <li><a href="{{ route('medicalpersonnel.notifications') }}" class="nav-link">Alerts & Notifications</a></li>
+            <li><a href="{{ route('report') }}" class="nav-link">Report</a></li>
             <li><a href="{{ route('logout') }}" class="nav-link">Logout</a></li>
         </ul>
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
-        <div class="dashboard-grid">
-            <!-- Search Bar -->
+        <div class="dashboard-header">
             <div class="search-bar">
-                <input type="text" placeholder="Search...">
-                <button><i class="fas fa-search"></i>Search</button>
-            </div>
-
-            <!-- Card 1 (Example Data) -->
-            <div class="card">
-                <h2 class="widget-title">Active Alerts</h2>
-                <div class="widget-value">3</div>
-                <p>Active emergency notifications.</p>
-            </div>
-
-            <!-- Card 2 (Example Data) -->
-            <div class="card">
-                <h2 class="widget-title">Medications</h2>
-                <div class="widget-value">15</div>
-                <p>Scheduled for today.</p>
-            </div>
-
-            <!-- Card 3 with Circular Chart (Progress) -->
-            <div class="card">
-                <h2 class="widget-title">Tracking Progress</h2>
-                <canvas id="progressChart" class="circular-chart"></canvas>
-            </div>
-
-            <!-- Line Chart (Location Data) -->
-            <div class="card col-span-2">
-                <h2 class="widget-title">Tracking Data</h2>
-                <canvas id="lineChart" class="chart-container"></canvas>
-            </div>
-
-            <!-- Pie Chart (Alerts Breakdown) -->
-            <div class="card">
-                <h2 class="widget-title">Alerts Breakdown</h2>
-                <canvas id="revenueChart" class="chart-container"></canvas>
-            </div>
-
-            <!-- Bar Chart -->
-            <div class="card col-span-3">
-                <h2 class="widget-title">Newborn Registrations</h2>
-                <canvas id="barChart" class="chart-container"></canvas>
+                <form method="POST" action="{{ route('rfid.info') }}" style="display: flex; width: 100%;">
+                    @csrf
+                    <input type="text" id="rfid_uid" name="rfid_uid" placeholder="RFID UID will appear here" readonly>
+                    <button type="button" id="rfid-search-btn">Scan RFID</button>
+                    <button type="submit" style="background-color: #FF7043;">Search</button>
+                </form>
             </div>
         </div>
-    </div>
 
-    <!-- SweetAlert2 for Notifications -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Medication Alerts (existing functionality remains untouched)
-            @if (!empty($medicationAlerts) && $medicationAlerts->count() > 0)
-                Swal.fire({
-                    title: 'Medication Alert',
-                    html: `
-                        <ul style="text-align: left;">
-                            @foreach ($medicationAlerts as $alert)
+        <div class="dashboard-grid">
+            <!-- Widget: Upcoming Alerts -->
+            <div class="card">
+                <h2 class="widget-title">Upcoming Alerts</h2>
+                <div class="widget-value">{{ $upcomingAlerts }}</div>
+                <p>Medications scheduled in the next 10 minutes.</p>
+            </div>
+
+            <!-- Widget: Medications Scheduled -->
+            <div class="card">
+                <h2 class="widget-title">Medications</h2>
+                <div class="widget-value">{{ $medicationsScheduled }}</div>
+                <p>Medications scheduled for today.</p>
+            </div>
+
+            <!-- Widget: Newborn Registrations Chart -->
+            <div class="card col-span-3">
+                <h2 class="widget-title">Newborn Registrations</h2>
+                <canvas id="registrationsChart" class="chart-container"></canvas>
+            </div>
+        </div>
+
+        <!-- Chart.js Script -->
+        <script>
+            const registrationCtx = document.getElementById('registrationsChart').getContext('2d');
+            const registrationData = {!! json_encode($newbornRegistrations) !!};
+
+            const labels = registrationData.map(item => item.date);
+            const counts = registrationData.map(item => item.count);
+
+            new Chart(registrationCtx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'New Registrations',
+                        backgroundColor: '#FF7043',
+                        data: counts
+                    }]
+                },
+                options: { responsive: true }
+            });
+        </script>
+
+        <!-- RFID Script -->
+        <script>
+            document.getElementById('rfid-search-btn').addEventListener('click', function () {
+                alert('Please scan the RFID tag.');
+                fetch('http://192.168.1.101/get-uid') // Replace with your Raspberry Pi Pico's IP
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.uid) {
+                            alert('RFID UID detected: ' + data.uid);
+                            document.getElementById('rfid_uid').value = data.uid;
+                        } else {
+                            throw new Error('No RFID UID detected.');
+                        }
+                    })
+                    .catch(error => {
+                        alert('Error: ' + error.message);
+                    });
+            });
+        </script>
+
+        <!-- SweetAlert Script -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                let alertsQueue = [];
+
+                // Medication Alerts
+                @if (!empty($medicationAlerts) && $medicationAlerts->count() > 0)
+                    alertsQueue.push({
+                        title: 'Medication Alert',
+                        html: `
+                            <ul style="text-align: left;">
+                                @foreach ($medicationAlerts as $alert)
+                                    <li>
+                                        <strong>{{ $alert->medication_name }}</strong><br>
+                                        Scheduled at: {{ $alert->administration_time }}<br>
+                                        Mother: {{ optional($alert->newborn)->mother_name ?? 'Unknown' }}
+                                    </li>
+                                @endforeach
+                            </ul>
+                        `,
+                        icon: 'warning',
+                        confirmButtonText: 'OK',
+                        timer: 10000
+                    });
+                @endif
+
+                // Location Log Alert
+                @if (!empty($latestLocationLog))
+                    alertsQueue.push({
+                        title: 'Location Alert',
+                        html: `
+                            <ul style="text-align: left;">
                                 <li>
-                                    <strong>{{ $alert->medication_name }}</strong><br>
-                                    Scheduled at: {{ $alert->administration_time }}<br>
-                                    Mother: {{ optional($alert->newborn)->mother_name ?? 'Unknown' }}
+                                    <b>UID:</b> {{ $latestLocationLog->uid }}<br>
+                                    <b>Location:</b> {{ $latestLocationLog->location }}<br>
+                                    <b>Logged At:</b> {{ $latestLocationLog->logged_at }}
                                 </li>
-                            @endforeach
-                        </ul>
-                    `,
-                    icon: 'warning',
-                    confirmButtonText: 'OK',
-                    timer: 10000 // Auto-close after 10 seconds
-                });
-            @endif
-    
-            // Location Log Alert (new functionality)
-            @if (!empty($latestLocationLog))
-                Swal.fire({
-                    title: 'Location Alert',
-                    html: `
-                        <ul style="text-align: left;">
-                            <li>
-                                <b>UID:</b> {{ $latestLocationLog->uid }}<br>
-                                <b>Location:</b> {{ $latestLocationLog->location }}<br>
-                                <b>Logged At:</b> {{ $latestLocationLog->logged_at }}
-                            </li>
-                        </ul>
-                    `,
-                    icon: 'info',
-                    confirmButtonText: 'OK',
-                    timer: 10000 // Auto-close after 10 seconds
-                });
-            @endif
-        });
-    </script>
+                            </ul>
+                        `,
+                        icon: 'info',
+                        confirmButtonText: 'OK',
+                        timer: 10000
+                    });
+                @endif
 
-    <!-- Chart.js configuration -->
-    <script>
-        // Circular Chart (Progress)
-        const progressCtx = document.getElementById('progressChart').getContext('2d');
-        const progressChart = new Chart(progressCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Tracked', 'Not Tracked'],
-                datasets: [{
-                    data: [85, 15],
-                    backgroundColor: ['#FF7043', '#E3F2FD'],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                cutout: '70%',
-                plugins: {
-                    legend: { display: false }
+                function displayAlerts(alerts) {
+                    if (alerts.length === 0) return;
+                    Swal.fire(alerts.shift()).then(() => displayAlerts(alerts));
                 }
-            }
-        });
 
-        // Line Chart (Location Tracking Data)
-        const lineCtx = document.getElementById('lineChart').getContext('2d');
-        const lineChart = new Chart(lineCtx, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                datasets: [{
-                    label: 'Tracked Locations',
-                    borderColor: '#1976D2',
-                    data: [50, 60, 55, 70, 80, 75],
-                    fill: false,
-                }]
-            },
-            options: { responsive: true }
-        });
-
-        // Pie Chart (Alerts Breakdown)
-        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
-        const revenueChart = new Chart(revenueCtx, {
-            type: 'pie',
-            data: {
-                labels: ['Critical', 'Warning', 'Normal'],
-                datasets: [{
-                    data: [10, 20, 70],
-                    backgroundColor: ['#FF7043', '#64B5F6', '#E57373']
-                }]
-            },
-            options: { responsive: true }
-        });
-
-        // Bar Chart (Newborn Registrations)
-        const barCtx = document.getElementById('barChart').getContext('2d');
-        const barChart = new Chart(barCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-                datasets: [{
-                    label: 'New Registrations',
-                    backgroundColor: '#FF7043',
-                    data: [10, 20, 30, 40, 50]
-                }]
-            },
-            options: { responsive: true }
-        });
-    </script>
-
-<script>
-    // Automatically refresh the page every 10 seconds
-    setInterval(function () {
-        window.location.reload();
-    }, 10000); // 10000 milliseconds = 10 seconds
-</script>
-
+                displayAlerts(alertsQueue);
+            });
+        </script>
+    </div>
 </body>
 </html>
